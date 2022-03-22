@@ -1,0 +1,16 @@
+{{- if and .Values.mariadb.enabled serviceAccount.create .Values.rbac.create (eq .Values.mariadb.useClusterRole false)-}}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: mariadb-glpi
+  labels: 
+    {{- include "glpi.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mariadb-glpi
+subjects:
+- kind: ServiceAccount
+  name: mariadb-glpi
+{{- end }}

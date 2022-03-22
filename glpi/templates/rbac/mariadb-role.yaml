@@ -1,0 +1,19 @@
+{{- if .Values.role.create -}}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: mariadb-glpi
+  labels:
+    {{- include "glpi.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+rules:
+- apiGroups:
+    - ""
+  resources:
+    - pods
+    - endpoints
+    - configmaps
+    - events
+  verbs:
+    - "*"
+{{- end }}
