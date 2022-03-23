@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
+data:
+  MYSQL_DATABASE: {{ .Values.DbName }}
+  MYSQL_USER: {{ .Values.DbUser }}
