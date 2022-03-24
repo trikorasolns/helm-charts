@@ -83,6 +83,9 @@ affinity: {}
 
 persistence:
   storageClassName: "manual"
+  dbName: glpi
+  dbUser: glpi
+
 
 mysqlDbPassword: "admin123"
 mysqlDbRootPassword: "admin123"
