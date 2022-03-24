@@ -1,0 +1,65 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: {{ include "mariadb.fullname" . }}
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "mariadb.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mariadb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mariadb.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3306
+              name: mariadbdb
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "mariadb.fullname" . }}
+            - secretRef:
+                name: {{ include "mariadb.fullname" . }}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: {{ include "mariadb.fullname" . }}
+      volumes:
+        - name: {{ include "mariadb.fullname" . }}
+          persistentVolumeClaim:
+            # claimName: glpi-mariadb-pvc
+            claimName: {{ include "mariadb.fullname" . }}
+      # securityContext:
+      #   runAsUser: 1000
+      #   runAsGroup: 1000
+        # fsGroup: 1000
+        # fsUser: 1000
+      # volumeClaimTemplates:
+      #   - metadata:
+      #       name: mariadbdb
+      #     spec: 
+      #       accessModes: [ "ReadWriteOnce" ]
+      #       storageClassName: glpi-managed-nfs-storage
+      #       resources:
+      #         requests:
+      #           storage: 10Gi
+      #             - name: mariadbdb

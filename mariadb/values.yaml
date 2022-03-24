@@ -81,5 +81,8 @@ tolerations: []
 
 affinity: {}
 
+persistence:
+  storageClassName: "manual"
+
 mysqlDbPassword: "admin123"
 mysqlDbRootPassword: "admin123"
