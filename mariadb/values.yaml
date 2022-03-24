@@ -80,3 +80,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+mysqlDbPassword: "admin123"
+mysqlDbRootPassword: "admin123"
