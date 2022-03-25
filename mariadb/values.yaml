@@ -85,6 +85,8 @@ persistence:
   storageClassName: "manual"
   dbName: glpi
   dbUser: glpi
+  mysqlDataSize: 3Gi
+  storageClassName: ""
 
 
 mysqlDbPassword: "admin123"
