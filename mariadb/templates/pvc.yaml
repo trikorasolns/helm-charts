@@ -15,6 +15,6 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.mysqlDataSize }}
-{{- if .Values.persistence.storageClassName -}}
+  {{- if .Values.persistence.storageClassName -}}
   storageClassName: {{ .Values.persistence.storageClassName | quote }}
-{{- end }}
+  {{- end }}

@@ -5,10 +5,12 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/centos7
+  # repository: docker.io/bitnami/mariadb
+  repository: quay.io/centos7/mariadb-103-centos7
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "mariadb-103-centos7"
+  # tag: "10.2.14"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -37,8 +39,9 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  # type: ClusterIP
+  type: NodePort
+  port: 3306
 
 ingress:
   enabled: false
@@ -82,12 +85,13 @@ tolerations: []
 affinity: {}
 
 persistence:
-  storageClassName: "manual"
+  storageClassName: ""
   dbName: glpi
   dbUser: glpi
   mysqlDataSize: 3Gi
-  storageClassName: ""
+  mountPath: "/var/lib/mysql"
+  # mountPath: "/bitnami/mariadb:Z"
 
 
-mysqlDbPassword: "admin123"
-mysqlDbRootPassword: "admin123"
+mysqlDbPassword: admin123
+mysqlDbRootPassword: admin123
