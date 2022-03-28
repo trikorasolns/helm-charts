@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "glpi.fullname" . }}
+  name: {{ include "glpi.fullname" . }}-crond
   labels:
     {{- include "glpi.labels" . | nindent 4 }}
 spec:
@@ -31,20 +31,36 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.imageCrond.repository }}:{{ .Values.imageCrond.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.imageCrond.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name:  {{ include "glpi.fullname" . }}
+            - secretRef:
+                name: {{ .Values.persistence.mariadbSecretName }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: ssh
+              containerPort: 22
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          volumeMounts:
+            - name: {{ include "glpi.fullname" . }}-files
+              mountPath: /var/www/html/files
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: /var/www/html/plugins
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -59,3 +75,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: {{ include "glpi.fullname" . }}-files
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-files
+        - name: {{ include "glpi.fullname" . }}-plugins
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-plugins
