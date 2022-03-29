@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "phpmyadmin.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "phpmyadmin.labels" . | nindent 4 }}
+data:
+    PMA_HOST: mariadb.{{ .Release.Namespace }}.svc.cluster.local
+    PMA_PORT: "3306"
