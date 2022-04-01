@@ -1,4 +1,8 @@
-1. Get the application URL by running these commands:
+1. Complete the deployment process by running the installation process:
+export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "glpi.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+kubectl -n glpi exec -it $POD_NAME -- php bin/console db:install
+
+2. Get the application URL by running these commands:
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}

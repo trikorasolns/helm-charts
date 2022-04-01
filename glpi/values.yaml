@@ -99,7 +99,7 @@ persistence:
   dbUser: glpi
   volumeFileSize: 3Gi
   volumePluginSize: 1Gi
-  mariadbSecretName: mariadb
+  mysqlDbPassword: admin123
 
-mysqlDbPassword: admin123
-mysqlDbRootPassword: admin123
+glpi:
+  sysPassword: admin123

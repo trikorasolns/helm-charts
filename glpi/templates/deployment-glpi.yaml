@@ -37,7 +37,7 @@ spec:
             - configMapRef:
                 name: {{ include "glpi.fullname" . }}
             - secretRef:
-                name: {{ .Values.persistence.mariadbSecretName }}
+                name: {{ include "glpi.fullname" . }}
           ports:
             - name: http
               containerPort: 80
