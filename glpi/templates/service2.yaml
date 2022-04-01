@@ -7,9 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service2.type }}
   ports:
-    - port: {{ .Values.service2.port }}
-      targetPort: http
+    - port: {{ .Values.service2.httpPort }}
+      targetPort: {{ .Values.service2.httpPort }}
       protocol: TCP
       name: http
+    - port: {{ .Values.service2.httpsPort }}
+      targetPort: {{ .Values.service2.httpsPort }}
+      protocol: TCP
+      name: https
   selector:
     {{- include "glpi.selectorLabels" . | nindent 4 }}
