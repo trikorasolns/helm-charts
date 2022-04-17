@@ -1,0 +1,26 @@
+= GLPI Helm Chart
+:toc: left
+:description: Helm Chart for deploying GLPI
+:icons: font
+
+== This Chart
+
+This helm chart deploys GLPI on kubernetes. 
+
+NOTE: The GLPI container deployed are provided by Fametec. DockerHub URL is https://registry.hub.docker.com/r/fametec/glpi .
+
+== Usage
+
+Install this chart.
+
+[source, bash]
+----
+helm install -n glpi glpi ./glpi
+----
+
+Install GLPI
+
+[source, bash]
+----
+helm install -n glpi glpi ./glpi --set glpi.install=true
+----

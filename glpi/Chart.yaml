@@ -1,6 +1,6 @@
 apiVersion: v2
 name: glpi
-description: GLPI
+description: GLPI APP
 
 # A chart can be either an 'application' or a 'library' chart.
 #

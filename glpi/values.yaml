@@ -6,15 +6,10 @@ replicaCount: 1
 
 image:
   repository: fametec/glpi
+  # repository: emersonarredondo/glpi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.6"
-
-imageCrond:
-  repository: fametec/glpi
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.6-crond"
+  tag: "9.5.3"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,13 +35,14 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 1000
+  # runAsUser: 48
 
 service:
-  type: ClusterIP
-  port: 80
-  # type: NodePort
-  # port: 30080
+  # type: ClusterIP
+  # port: 80
+  type: NodePort
+  port: 30080
+  nodePort: 31000
 
 ingress:
   enabled: true
@@ -97,7 +93,10 @@ persistence:
   dbUser: glpi
   volumeFileSize: 3Gi
   volumePluginSize: 1Gi
+  volumeConfigSize: 1Gi
   mysqlDbPassword: admin123
 
 glpi:
   sysPassword: admin123
+  install: false
+  update: false
