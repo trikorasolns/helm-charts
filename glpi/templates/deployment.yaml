@@ -27,15 +27,87 @@ spec:
       serviceAccountName: {{ include "glpi.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- if .Values.glpi.install }}
+        - name: {{ .Chart.Name }}-init-folders
+          image: busybox:1.28
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "mkdir /glpi-files/_cron ; chown 48:48 -R /glpi-files/_cron ; mkdir /glpi-files/_dumps ; chown 48:48 -R /glpi-files/_dumps ; mkdir /glpi-files/_graphs ; chown 48:48 -R /glpi-files/_graphs ; mkdir /glpi-files/_lock ; chown 48:48 -R /glpi-files/_lock ; mkdir /glpi-files/_pictures ; chown 48:48 -R /glpi-files/_pictures ; mkdir /glpi-files/_plugins ; chown 48:48 -R /glpi-files/_plugins ; mkdir /glpi-files/_rss ; chown 48:48 -R /glpi-files/_rss ; mkdir /glpi-files/_sessions ; chown 48:48 -R /glpi-files/_sessions ; mkdir /glpi-files/_tmp ; chown 48:48 -R /glpi-files/_tmp ; mkdir /glpi-files/_uploads ; chown 48:48 -R /glpi-files/_uploads ; mkdir /glpi-files/_cache ; chown 48:48 -R /glpi-files/_cache"]
+          volumeMounts:
+          - name: {{ include "glpi.fullname" . }}-files
+            mountPath: "/glpi-files"
+        # - name: {{ .Chart.Name }}-install
+        #   image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        #   imagePullPolicy: {{ .Values.image.pullPolicy }}
+        #   command: ["/bin/sh"]
+        #   args: ["-c", "install_glpi.sh ; php bin/console db:install -q"]
+        #   env:
+        #     - name: GLPI_LANG
+        #       value: en_GB
+        #     - name: MARIADB_HOST
+        #       value: mariadb.{{ .Release.Namespace }}.svc.cluster.local
+        #     - name: MARIADB_PORT
+        #       value: "3306"
+        #     - name: MARIADB_DATABASE
+        #       value: {{ .Values.persistence.dbName }}
+        #     - name: MARIADB_USER
+        #       value: {{ .Values.persistence.dbUser }}
+        #     - name: VERSION
+        #       value: {{ .Values.image.tag | default .Chart.AppVersion }}
+        #     - name: PLUGINS
+        #       value: all
+        #     - name: MARIADB_PASSWORD
+        #       value: {{ .Values.persistence.mysqlDbPassword | b64enc }}
+        #     - name: glpi-password
+        #       value: {{ .Values.glpi.sysPassword | b64enc }}
+        #   volumeMounts:
+        #     - name: {{ include "glpi.fullname" . }}-files
+        #       mountPath: /var/www/html/files
+        #     - name: {{ include "glpi.fullname" . }}-plugins
+        #       mountPath: /var/www/html/plugins
+        #     - name: {{ include "glpi.fullname" . }}-config
+        #       mountPath: /var/www/html/config
+        {{- end }}
+        {{- if .Values.glpi.update }}
+        - name: {{ .Chart.Name }}-update
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c", "php bin/console db:update -q"]
+          envFrom:
+            - configMapRef:
+                name: {{ include "glpi.fullname" . }}
+            - secretRef:
+                name: {{ include "glpi.fullname" . }}
+          volumeMounts:
+            - name: {{ include "glpi.fullname" . }}-files
+              mountPath: /var/www/html/files
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: /var/www/html/plugins
+            - name: {{ include "glpi.fullname" . }}-config
+              mountPath: /var/www/html/config
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "glpi.fullname" . }}
+            - secretRef:
+                name: {{ include "glpi.fullname" . }}
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: ssh
+              containerPort: 22
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -45,6 +117,13 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - name: {{ include "glpi.fullname" . }}-files
+              mountPath: /var/www/html/files
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: /var/www/html/plugins
+            - name: {{ include "glpi.fullname" . }}-config
+              mountPath: /var/www/html/config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -59,3 +138,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: {{ include "glpi.fullname" . }}-files
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-files
+        - name: {{ include "glpi.fullname" . }}-plugins
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-plugins
+        - name: {{ include "glpi.fullname" . }}-config
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-config
