@@ -42,11 +42,10 @@ spec:
                 name: {{ include "mariadb.fullname" . }}
           volumeMounts:
             - mountPath: {{ .Values.persistence.mountPath }}
-              name: {{ include "mariadb.fullname" . }}
+              name: "mariadb-data"
       volumes:
-        - name: {{ include "mariadb.fullname" . }}
+        - name: "mariadb-data"
           persistentVolumeClaim:
-            # claimName: glpi-mariadb-pvc
             claimName: {{ include "mariadb.fullname" . }}
       # securityContext:
       #   runAsUser: 27
