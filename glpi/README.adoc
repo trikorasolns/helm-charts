@@ -9,18 +9,39 @@ This helm chart deploys GLPI on kubernetes.
 
 NOTE: The GLPI container deployed are provided by Fametec. DockerHub URL is https://registry.hub.docker.com/r/fametec/glpi .
 
-== Usage
+== Default Usage
 
 Install this chart.
 
 [source, bash]
 ----
-helm install -n glpi glpi ./glpi
+helm install -n glpi glpi glpi
 ----
 
-Install GLPI
+== Enable ingress
+
+To enable ingress create your own values file (`my-glpi-values.yaml` for the sake of the example) file such as this.
+
+.Sample ingress configuration file (my-glpi-values.yaml)
+[source,yaml]
+----
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: glpi.mydomain
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            serviceName: glpi
+            servicePort: 80
+----
+
+...and install the chart using this file.
 
 [source, bash]
 ----
-helm install -n glpi glpi ./glpi --set glpi.install=true
+helm install -n glpi -f my-glpi-values.yaml glpi glpi
 ----
