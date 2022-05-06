@@ -33,7 +33,7 @@ spec:
           image: busybox:1.28
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh"]
-          args: ["-c", "mkdir /glpi-files/_cron ; chown 48:48 -R /glpi-files/_cron ; mkdir /glpi-files/_dumps ; chown 48:48 -R /glpi-files/_dumps ; mkdir /glpi-files/_graphs ; chown 48:48 -R /glpi-files/_graphs ; mkdir /glpi-files/_lock ; chown 48:48 -R /glpi-files/_lock ; mkdir /glpi-files/_pictures ; chown 48:48 -R /glpi-files/_pictures ; mkdir /glpi-files/_plugins ; chown 48:48 -R /glpi-files/_plugins ; mkdir /glpi-files/_rss ; chown 48:48 -R /glpi-files/_rss ; mkdir /glpi-files/_sessions ; chown 48:48 -R /glpi-files/_sessions ; mkdir /glpi-files/_tmp ; chown 48:48 -R /glpi-files/_tmp ; mkdir /glpi-files/_uploads ; chown 48:48 -R /glpi-files/_uploads ; mkdir /glpi-files/_cache ; chown 48:48 -R /glpi-files/_cache"]
+          args: ["-c", "mkdir /glpi-files/_cron ; chown 48:48 -R /glpi-files/_cron ; mkdir /glpi-files/_dumps ; chown 48:48 -R /glpi-files/_dumps ; mkdir /glpi-files/_graphs ; chown 48:48 -R /glpi-files/_graphs ; mkdir /glpi-files/_lock ; chown 48:48 -R /glpi-files/_lock ; mkdir /glpi-files/_log ; chown 48:48 -R /glpi-files/_log ; mkdir /glpi-files/_pictures ; chown 48:48 -R /glpi-files/_pictures ; mkdir /glpi-files/_plugins ; chown 48:48 -R /glpi-files/_plugins ; mkdir /glpi-files/_rss ; chown 48:48 -R /glpi-files/_rss ; mkdir /glpi-files/_sessions ; chown 48:48 -R /glpi-files/_sessions ; mkdir /glpi-files/_tmp ; chown 48:48 -R /glpi-files/_tmp ; mkdir /glpi-files/_uploads ; chown 48:48 -R /glpi-files/_uploads ; mkdir /glpi-files/_cache ; chown 48:48 -R /glpi-files/_cache"]
           volumeMounts:
           - name: {{ include "glpi.fullname" . }}-files
             mountPath: "/glpi-files"
