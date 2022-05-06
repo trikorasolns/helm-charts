@@ -9,7 +9,7 @@ image:
   # repository: emersonarredondo/glpi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.3"
+  tag: "9.5.6"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -47,15 +47,15 @@ service:
   # nodePort: 31000
 
 ingress:
-  enabled: true
+  enabled: false
   className: "nginx"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: glpi-dev.trikorasolutions.net
+    - host: glpi.localdomain
       paths:
-        - path: /*
+        - path: /
           pathType: Prefix
           backend:
             serviceName: glpi
