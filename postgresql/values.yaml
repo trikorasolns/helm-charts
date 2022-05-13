@@ -84,10 +84,11 @@ tolerations: []
 affinity: {}
 
 persistence:
+  # Use the following variables to define the POSTGRES database to be created and the POSTGRES default user.
+  # These fields will default to the release namespace.
+  # dbName: tbd
+  # dbUser: tbd
   storageClassName: ""
-  dbName: glpi
-  dbUser: glpi
-  mysqlDataSize: 10Gi
-  mountPath: "/var/lib/postgresql/data:Z"
-
-postgresqlDbPassword: admin123
+  dbDataSize: 10Gi
+  mountPath: "/var/lib/postgresql/data"
+  postgresqlDbPassword: admin123

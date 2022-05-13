@@ -6,5 +6,5 @@ metadata:
   labels:
     {{- include "postgresql.labels" . | nindent 4 }}
 data:
-  POSTGRES_DB: {{ .Values.persistence.dbName }}
-  POSTGRES_USER: {{ .Values.persistence.dbUser }}
+  POSTGRES_DB: {{ .Values.persistence.dbName | default .Release.Namespace }}
+  POSTGRES_USER: {{ .Values.persistence.dbUser | default .Release.Namespace}}

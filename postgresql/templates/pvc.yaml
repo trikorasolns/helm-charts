@@ -14,7 +14,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.persistence.mysqlDataSize }}
+      storage: {{ .Values.persistence.dbDataSize }}
   {{- if .Values.persistence.storageClassName -}}
   storageClassName: {{ .Values.persistence.storageClassName | quote }}
   {{- end }}
