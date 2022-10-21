@@ -1,15 +1,16 @@
-# Default values for glpi.
+# Default values for postgresql.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: fametec/glpi
-  # repository: emersonarredondo/glpi
+  # repository: docker.io/bitnami/postgresql
+  repository:  postgres
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.6"
+  # tag: "10.2.14"
+  # tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -35,31 +36,23 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 48
+  # runAsUser: 1000
 
 service:
-  type: LoadBalancer
-  port: 80
-  # type: ClusterIP
-  # port: 80
-  # type: NodePort
-  # port: 30080
-  # nodePort: 31000
+  type: ClusterIP
+  port: 5432
 
 ingress:
   enabled: false
-  className: "nginx"
+  className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: glpi.localdomain
+    - host: postgresql.local
       paths:
         - path: /
-          pathType: Prefix
-          backend:
-            serviceName: glpi
-            servicePort: 80
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -80,7 +73,7 @@ resources: {}
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 4
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -91,15 +84,10 @@ tolerations: []
 affinity: {}
 
 persistence:
-  dbName: glpi
-  dbUser: glpi
-  volumeFileSize: 5Gi
-  volumePluginSize: 1Gi
-  volumeConfigSize: 1Gi
-  mysqlDbPassword: admin123
-  storageClassName: local-storage
-
-glpi:
-  sysPassword: admin123
-  install: false
-  update: false
+  # Use the following variables to define the POSTGRES database to be created and the POSTGRES default user.
+  # These fields will default to the release namespace.
+  # dbName: tbd
+  # dbUser: tbd
+  dbDataSize: 10Gi
+  mountPath: "/var/lib/postgresql/data"
+  postgresqlDbPassword: "admin123"

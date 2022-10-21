@@ -1,0 +1,4 @@
+1. To connect to this database instance use the following address as DB URL:
+URL: {{ include "postgresql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+Port: {{ .Values.service.port }}
+

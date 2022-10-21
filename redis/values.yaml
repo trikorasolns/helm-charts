@@ -1,15 +1,14 @@
-# Default values for glpi.
+# Default values for redis.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: fametec/glpi
-  # repository: emersonarredondo/glpi
+  repository: redis
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.6"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -35,31 +34,23 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 48
+  # runAsUser: 1000
 
 service:
-  type: LoadBalancer
-  port: 80
-  # type: ClusterIP
-  # port: 80
-  # type: NodePort
-  # port: 30080
-  # nodePort: 31000
+  type: ClusterIP
+  port: 6379
 
 ingress:
   enabled: false
-  className: "nginx"
+  className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: glpi.localdomain
+    - host: chart-example.local
       paths:
         - path: /
-          pathType: Prefix
-          backend:
-            serviceName: glpi
-            servicePort: 80
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -89,17 +80,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-persistence:
-  dbName: glpi
-  dbUser: glpi
-  volumeFileSize: 5Gi
-  volumePluginSize: 1Gi
-  volumeConfigSize: 1Gi
-  mysqlDbPassword: admin123
-  storageClassName: local-storage
-
-glpi:
-  sysPassword: admin123
-  install: false
-  update: false
