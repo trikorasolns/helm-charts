@@ -93,10 +93,11 @@ affinity: {}
 persistence:
   dbName: glpi
   dbUser: glpi
-  volumeFileSize: 3Gi
+  volumeFileSize: 5Gi
   volumePluginSize: 1Gi
   volumeConfigSize: 1Gi
   mysqlDbPassword: admin123
+  storageClassName: local-storage
 
 glpi:
   sysPassword: admin123
