@@ -1,8 +1,9 @@
 #!/bin/bash
 echo "Starting..."
 set -euo pipefail
-
+echo "...get diffs..."
 CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- . | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+echo "CHART_DIRS: ${CHART_DIRS}"
 KUBEVAL_VERSION="v0.16.1"
 SCHEMA_LOCATION="https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/"
 
