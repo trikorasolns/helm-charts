@@ -1,15 +1,19 @@
 #!/bin/bash
+echo "Starting..."
 set -euo pipefail
-
+echo "...get diffs..."
 CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- . | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+echo "CHART_DIRS: ${CHART_DIRS}"
 KUBEVAL_VERSION="v0.16.1"
 SCHEMA_LOCATION="https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/"
 
-# install kubeval
+echo "...download kubeval..."
 curl --silent --show-error --fail --location --output /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/"${KUBEVAL_VERSION}"/kubeval-linux-amd64.tar.gz
+echo "...extract kubeval..."
 tar -xf /tmp/kubeval.tar.gz kubeval
 
-# validate charts
+echo "...validate charts..."
 for CHART_DIR in ${CHART_DIRS}; do
   helm template "${CHART_DIR}" | ./kubeval --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
 done
+echo "...finished!"
