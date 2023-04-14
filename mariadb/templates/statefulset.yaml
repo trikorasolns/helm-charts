@@ -41,12 +41,16 @@ spec:
             - secretRef:
                 name: {{ include "mariadb.fullname" . }}
           volumeMounts:
+          {{- if .Values.persistence.enabled }}
             - mountPath: {{ .Values.persistence.mountPath }}
               name: "mariadb-data"
+          {{- end }}
       volumes:
+      {{- if .Values.persistence.enabled }}
         - name: "mariadb-data"
           persistentVolumeClaim:
             claimName: {{ include "mariadb.fullname" . }}
+      {{- end }}
       # securityContext:
       #   runAsUser: 27
       #   runAsGroup: 1000
