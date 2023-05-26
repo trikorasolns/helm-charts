@@ -59,11 +59,11 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /var/lib/grafana
-              name: {{ include "graphana.fullname" . }}
+              name: {{ include "grafana.fullname" . }}
       volumes:
-        - name: {{ include "graphana.fullname" . }}
+        - name: {{ include "grafana.fullname" . }}
           persistentVolumeClaim:
-            claimName: {{ include "graphana.fullname" . }}
+            claimName: {{ include "grafana.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
