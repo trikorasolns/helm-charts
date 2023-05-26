@@ -10,19 +10,8 @@ spec:
     - port: {{ .Values.service.port }}
       protocol: TCP
       name: mariadb
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
   selector:
     {{- include "mariadb.selectorLabels" . | nindent 4 }}
-
-# spec:
-#   type: NodePort
-#   # type: ClusterIP
-#   ports:
-#     - name: mariadb
-#       port: 3306
-#       protocol: TCP
-#       # targetPort: 3306
-#       # nodePort: 30001
-#   selector:
-#     app.kubernetes.io/name: mariadb
-# status:
-#   loadBalancer: {}

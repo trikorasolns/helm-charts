@@ -85,12 +85,14 @@ tolerations: []
 affinity: {}
 
 persistence:
+  enabled: true
   storageClassName: ""
-  dbName: glpi
-  dbUser: glpi
   mysqlDataSize: 3Gi
   mountPath: "/var/lib/mysql:Z"
   # mountPath: "/bitnami/mariadb:Z"
 
-mysqlDbPassword: admin123
-mysqlDbRootPassword: admin123
+database: 
+  dbName: mariadb
+  dbUser: mariadb
+  dbPassword: admin123
+  dbRootPassword: admin123
