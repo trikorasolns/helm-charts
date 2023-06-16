@@ -5,10 +5,10 @@ metadata:
   name: {{ include "mariadb.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "mariadb.labels" . | nindent 4 }}
+    {{ include "mariadb.labels" . | nindent 4 }}
   {{- with .Values.serviceAccount.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{ toYaml . | nindent 4 }}
   {{- end }}
 spec:
   accessModes:

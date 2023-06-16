@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  # repository: docker.io/bitnami/mariadb
-  repository: quay.io/centos7/mariadb-103-centos7
+  repository: docker.io/mariadb
+  #repository: quay.io/centos7/mariadb-103-centos7
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "10.2.14"
@@ -47,10 +47,8 @@ ingress:
   enabled: false
   className: ""
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: glpi.local
+    - host: mariadb.local
       paths:
         - path: /
           pathType: ImplementationSpecific
