@@ -10,7 +10,47 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 rules:
-  - apiGroups: [""]
-    resources: ["*"]
-    verbs: ["*"]
+- apiGroups:
+  - '*'
+  resources:
+  - statefulsets
+  - services
+  - replicationcontrollers
+  - replicasets
+  - podtemplates
+  - podsecuritypolicies
+  - pods
+  - pods/log
+  - pods/exec
+  - podpreset
+  - poddisruptionbudget
+  - persistentvolumes
+  - persistentvolumeclaims
+  - jobs
+  - endpoints
+  - deployments
+  - deployments/scale
+  - daemonsets
+  - cronjobs
+  - configmaps
+  - namespaces
+  - events
+  - secrets
+  verbs:
+  - create
+  - get
+  - watch
+  - delete
+  - list
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+  - update
 {{- end }}
