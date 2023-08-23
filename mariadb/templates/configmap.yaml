@@ -7,6 +7,6 @@ metadata:
     {{- include "mariadb.labels" . | nindent 4 }}
 data:
   #MYSQL_DATABASE
-  MARIADB_DATABASE: {{ .Values.persistence.dbName }}
+  MARIADB_DATABASE: {{ .Values.database.dbName }}
   # MYSQL_USER
-  MARIADB_USER: {{ .Values.persistence.dbUser }}
+  MARIADB_USER: {{ .Values.database.dbUser }}

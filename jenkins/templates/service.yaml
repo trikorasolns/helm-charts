@@ -11,5 +11,8 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - name: jnlpport
+      port: 50000
+      targetPort: 50000
   selector:
     {{- include "jenkins.selectorLabels" . | nindent 4 }}

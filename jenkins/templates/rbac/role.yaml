@@ -10,10 +10,16 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 rules:
-- apiGroups:
-    - ""
-  resources:
-    - pods
-  verbs:
-    - create
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create","delete","get","list","patch","update","watch"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get","list","watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
 {{- end }}
