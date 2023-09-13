@@ -15,3 +15,9 @@ data:
   MARIADB_USER: {{ .Values.persistence.dbUser }}
   VERSION: {{ .Values.image.tag | default .Chart.AppVersion }}
   PLUGINS: all
+  # v10
+  GLPI_LANGUAGE: en_GB
+  GLPI_DB_HOST: mariadb.{{ .Release.Namespace }}.svc.cluster.local
+  GLPI_DB_PORT: "3306"
+  GLPI_DB_NAME: {{ .Values.database.dbName }}
+  GLPI_DB_USER_NAME: {{ .Values.database.dbUser }}

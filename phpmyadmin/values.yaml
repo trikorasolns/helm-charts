@@ -37,10 +37,10 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
-  port: 80
-  # type: ClusterIP
+  # type: LoadBalancer
   # port: 80
+  type: ClusterIP
+  port: 80
 
 service2:
   type: NodePort
@@ -60,7 +60,7 @@ ingress:
           # pathType: ImplementationSpecific
           pathType: Prefix
           backend:
-            serviceName: glpi
+            serviceName: http
             servicePort: 80
   tls: []
   #  - secretName: chart-example-tls

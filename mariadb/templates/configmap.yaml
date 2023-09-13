@@ -8,5 +8,7 @@ metadata:
 data:
   #MYSQL_DATABASE
   MARIADB_DATABASE: {{ .Values.database.dbName }}
+  MARIADB_MYSQL_LOCALHOST_USER: "{{ .Values.database.localDbUser }}"
+  MARIADB_MYSQL_LOCALHOST_GRANTS: "RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR"
   # MYSQL_USER
   MARIADB_USER: {{ .Values.database.dbUser }}
