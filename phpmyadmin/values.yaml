@@ -41,6 +41,8 @@ service:
   # port: 80
   type: ClusterIP
   port: 80
+  # type: ClusterIP
+  # port: 80
 
 service2:
   type: NodePort
