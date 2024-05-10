@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "glpi.fullname" . }}
+  labels:
+    {{- include "glpi.labels" . | nindent 4 }}
+spec:
+           # ┌───────────── minute (0 - 59)
+           # │ ┌───────────── hour (0 - 23)
+           # │ │ ┌───────────── day of the month (1 - 31)
+           # │ │ │ ┌───────────── month (1 - 12)
+           # │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+           # │ │ │ │ │                                   7 is also Sunday on some systems)
+           # │ │ │ │ │                                   OR sun, mon, tue, wed, thu, fri, sat
+           # │ │ │ │ │
+           # * * * * *
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}-cron
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command:
+            - php 
+            - /var/www/html/glpi/front/cron.php
+          envFrom:
+            - configMapRef:
+                name: {{ include "glpi.fullname" . }}
+            - secretRef:
+                name: {{ include "glpi.fullname" . }}
+          volumeMounts:
+            - name: {{ include "glpi.fullname" . }}-config
+              mountPath: {{ .Values.persistence.mountPaths.config }}
+            - name: {{ include "glpi.fullname" . }}-files
+              mountPath: {{ .Values.persistence.mountPaths.files }}
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: {{ .Values.persistence.mountPaths.plugins }}
+          restartPolicy: OnFailure

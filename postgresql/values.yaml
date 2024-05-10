@@ -89,5 +89,6 @@ persistence:
   # dbName: tbd
   # dbUser: tbd
   dbDataSize: 10Gi
-  mountPath: "/var/lib/postgresql/data"
-  postgresqlDbPassword: "admin123"
+  mountPath: "/var/lib/postgresql/data:Z"
+  #dbPassword: 
+  storageClassName: local-storage

@@ -8,7 +8,7 @@ image:
   repository: phpmyadmin/phpmyadmin
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "5.1.3"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -37,7 +37,9 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: LoadBalancer
+  # type: LoadBalancer
+  # port: 80
+  type: ClusterIP
   port: 80
   # type: ClusterIP
   # port: 80
@@ -60,7 +62,7 @@ ingress:
           # pathType: ImplementationSpecific
           pathType: Prefix
           backend:
-            serviceName: glpi
+            serviceName: http
             servicePort: 80
   tls: []
   #  - secretName: chart-example-tls

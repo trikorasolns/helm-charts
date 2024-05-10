@@ -1,13 +1,28 @@
 = GLPI Helm Chart
+A.C. <a dot costa at trikorasolutions dot com>
+:Date:      {docdate}
+:table-caption: Table
 :toc: left
-:description: Helm Chart for deploying GLPI
+:toc-title: Table of Contents
 :icons: font
+:source-highlighter: rouge
+:description: Helm Chart for deploying GLPI
+required to deploy GLPI on a Kubernetes cluster.
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 == This Chart
 
 This helm chart deploys GLPI on kubernetes. 
 
-NOTE: The GLPI container deployed are provided by Fametec. DockerHub URL is https://registry.hub.docker.com/r/fametec/glpi .
+It publishes 1 init container and 2 containers. More information on the
+containers on the [trikorasolns/glpi-container](https://github.com/trikorasolns/glpi-container/)
+
 
 == Default Usage
 
@@ -15,12 +30,17 @@ Install this chart.
 
 [source, bash]
 ----
-helm install -n glpi glpi glpi
+helm upgrade --install --namespace glpi glpi ./glpi
 ----
 
 == Enable ingress
 
-To enable ingress create your own values file (`my-glpi-values.yaml` for the sake of the example) file such as this.
+To enable ingress create your own values file (`my-glpi-values.yaml` for the sake of the example) with these contents.
+
+[WARNING]
+====
+The `host` is the hostname to be used to access the application.
+====
 
 .Sample ingress configuration file (my-glpi-values.yaml)
 [source,yaml]
@@ -43,5 +63,5 @@ ingress:
 
 [source, bash]
 ----
-helm install -n glpi -f my-glpi-values.yaml glpi glpi
+helm upgrade --install --namespace glpi --values my-glpi-values.yaml glpi ./glpi
 ----
