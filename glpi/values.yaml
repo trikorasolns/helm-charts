@@ -5,11 +5,15 @@
 replicaCount: 1
 
 image:
-  repository: fametec/glpi
+  repository: quay.io/trikorasolns/glpi-container/glpi-container-web
+  # repository: fametec/glpi
   # repository: emersonarredondo/glpi
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.5.6"
+  # 9.5.6
+  # tag: "0.0.1"
+  initRepository: quay.io/trikorasolns/glpi-container/glpi-container-init
+  cronRepository: quay.io/trikorasolns/glpi-container/glpi-container-cron
 
 imagePullSecrets: []
 nameOverride: ""
@@ -27,6 +31,8 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
+  # runAsUser: 33
+  # runAsGroup: 33
   # fsGroup: 2000
 
 securityContext: {}
@@ -38,10 +44,10 @@ securityContext: {}
   # runAsUser: 48
 
 service:
-  type: LoadBalancer
-  port: 80
-  # type: ClusterIP
+  # type: LoadBalancer
   # port: 80
+  type: ClusterIP
+  port: 80
   # type: NodePort
   # port: 30080
   # nodePort: 31000
@@ -58,8 +64,8 @@ ingress:
         - path: /
           pathType: Prefix
           backend:
-            serviceName: glpi
-            servicePort: 80
+            serviceName: http
+            servicePort: 8080
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -94,12 +100,23 @@ persistence:
   dbName: glpi
   dbUser: glpi
   volumeFileSize: 5Gi
-  volumePluginSize: 1Gi
+  volumeLogSize: 1Gi
+  # volumePluginSize: 1Gi
   volumeConfigSize: 1Gi
   mysqlDbPassword: admin123
   storageClassName: local-storage
+  mountPaths:
+    config: "/etc/glpi:Z"
+    files: "/var/lib/glpi:Z"
+    marketplace: "/var/www/html/glpi/marketplace:Z"
+    log: "/var/log/glpi:Z"
+    # plugins: "/var/www/html/plugins:Z"
 
-glpi:
-  sysPassword: admin123
-  install: false
-  update: false
+database: 
+  dbName: glpi
+  dbUser: glpi
+  dbPassword: glpi
+
+# glpi:
+  # TODO: Generate password if undefined
+  # sysPassword: glpi

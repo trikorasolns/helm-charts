@@ -10,7 +10,7 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "10.2.14"
-  tag: "latest"
+  # tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -91,6 +91,7 @@ persistence:
 
 database: 
   dbName: mariadb
-  dbUser: mariadb
   dbPassword: admin123
   dbRootPassword: admin123
+  dbUser: mariadb
+  localDbUser: 1
