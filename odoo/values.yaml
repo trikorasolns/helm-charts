@@ -95,6 +95,5 @@ persistence:
 database:
   name: postgresql
   user: odoo
-  #password: 
   host: postgresql.odoo.svc.cluster.local
   
