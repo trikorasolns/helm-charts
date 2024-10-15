@@ -8,7 +8,7 @@ image:
   repository: odoo
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -93,8 +93,7 @@ persistence:
   volumeWebAddons: 5Gi
 
 database:
-  name: postgresql
+  name: postgres
   user: odoo
-  #password: 
   host: postgresql.odoo.svc.cluster.local
   
