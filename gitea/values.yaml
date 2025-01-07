@@ -1,16 +1,14 @@
-# Default values for postgresql.
+# Default values for gitea.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  # repository: docker.io/bitnami/postgresql
-  repository:  postgres
+  repository: gitea/gitea
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "10.2.14"
-  # tag: "latest"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -23,12 +21,13 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: "gitea-admin"
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
 
 securityContext: {}
   # capabilities:
@@ -39,20 +38,25 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  # type: LoadBalancer
+  # port: 80
   type: ClusterIP
-  port: 5432
+  port: 80
 
 ingress:
   enabled: false
-  className: ""
+  className: "nginx"
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: postgresql.local
+    - host: gitea.localdomain
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
+          backend:
+            serviceName: http
+            servicePort: 3000
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -73,7 +77,7 @@ resources: {}
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 4
+  maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -84,25 +88,6 @@ tolerations: []
 affinity: {}
 
 persistence:
-  # Use the following variables to define the POSTGRES database to be created and the POSTGRES default user.
-  # These fields will default to the release namespace.
-  # dbName: tbd
-  # dbUser: tbd
-  dbDataSize: 10Gi
-  mountPath: "/var/lib/postgresql/data:Z"
-  #dbPassword: 
+  volumeGiteaData: 30Gi
+  volumeGiteaConfig: 1Gi
   storageClassName: local-storage
-  # To use an iscsi target use this section instead
-  # iscsi:
-  #   targetPortal: 10.0.2.15:3260
-  #   portals: ['10.0.2.16:3260', '10.0.2.17:3260']
-  #   iqn: iqn.2001-04.com.example:storage.kube.sys1.xyz
-  #   lun: 0
-  #   fsType: ext4
-  #   readOnly: false
-
-securityContext:
-  seLinuxOptions: 
-    role: system_r
-    type: container_t
-    user: system_u

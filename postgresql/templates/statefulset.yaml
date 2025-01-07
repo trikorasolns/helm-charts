@@ -45,5 +45,15 @@ spec:
               name: "postgresql-data"
       volumes:
         - name: "postgresql-data"
+        {{- if not .Values.persistence.iscsi }}
           persistentVolumeClaim:
             claimName: {{ include "postgresql.fullname" . }}
+        {{- else }}
+          iscsi:
+            targetPortal: {{ .Values.persistence.iscsi.targetPortal }}
+            portals: {{ .Values.persistence.iscsi.portals }}
+            iqn: {{ .Values.persistence.iscsi.iqn }}
+            lun: {{ .Values.persistence.iscsi.lun }}
+            fsType: {{ .Values.persistence.iscsi.fsType }}
+            readOnly: {{ .Values.persistence.iscsi.readOnly }}
+        {{- end }}

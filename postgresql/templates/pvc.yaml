@@ -1,3 +1,4 @@
+{{- if not .Values.persistence.iscsi }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -18,3 +19,11 @@ spec:
   {{- if .Values.persistence.storageClassName }}
   storageClassName: {{ .Values.persistence.storageClassName | quote }}
   {{- end }}
+  {{- if .Values.persistence.selector }}
+  selector:
+    matchExpressions:
+      - key: {{ .Values.persistence.selector.key }}
+        operator: {{ .Values.persistence.selector.operator }}
+        values: {{ .Values.persistence.selector.values }}
+  {{- end }}
+{{- end }}
