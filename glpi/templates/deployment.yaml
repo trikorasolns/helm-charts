@@ -43,8 +43,10 @@ spec:
               mountPath: {{ .Values.persistence.mountPaths.config }}
             - name: {{ include "glpi.fullname" . }}-files
               mountPath: {{ .Values.persistence.mountPaths.files }}
-            - name: {{ include "glpi.fullname" . }}-marketplace
-              mountPath: {{ .Values.persistence.mountPaths.marketplace }}
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: {{ .Values.persistence.mountPaths.plugins }}
+            # - name: {{ include "glpi.fullname" . }}-marketplace
+            #   mountPath: {{ .Values.persistence.mountPaths.marketplace }}
             - name: {{ include "glpi.fullname" . }}-log
               mountPath: {{ .Values.persistence.mountPaths.log }}
       containers:
@@ -89,6 +91,8 @@ spec:
               mountPath: {{ .Values.persistence.mountPaths.config }}
             - name: {{ include "glpi.fullname" . }}-files
               mountPath: {{ .Values.persistence.mountPaths.files }}
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: {{ .Values.persistence.mountPaths.plugins }}
             - name: {{ include "glpi.fullname" . }}-marketplace
               mountPath: {{ .Values.persistence.mountPaths.marketplace }}
             - name: {{ include "glpi.fullname" . }}-log
@@ -127,12 +131,12 @@ spec:
               path: /
               port: http
           volumeMounts:
-            - name: {{ include "glpi.fullname" . }}-files
-              mountPath: /var/www/html/files
-            - name: {{ include "glpi.fullname" . }}-plugins
-              mountPath: /var/www/html/plugins
             - name: {{ include "glpi.fullname" . }}-config
-              mountPath: /var/www/html/config
+              mountPath: {{ .Values.persistence.mountPaths.config }}
+            - name: {{ include "glpi.fullname" . }}-files
+              mountPath: {{ .Values.persistence.mountPaths.files }}
+            - name: {{ include "glpi.fullname" . }}-plugins
+              mountPath: {{ .Values.persistence.mountPaths.plugins }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -157,6 +161,9 @@ spec:
         - name: {{ include "glpi.fullname" . }}-config
           persistentVolumeClaim:
             claimName: {{ include "glpi.fullname" . }}-config
+        - name: {{ include "glpi.fullname" . }}-marketplace
+          persistentVolumeClaim:
+            claimName: {{ include "glpi.fullname" . }}-marketplace
         - name: {{ include "glpi.fullname" . }}-marketplace
           persistentVolumeClaim:
             claimName: {{ include "glpi.fullname" . }}-marketplace
