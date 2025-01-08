@@ -37,6 +37,10 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+  # seLinuxOptions: 
+  #   role: system_r
+  #   type: container_t
+  #   user: system_u
 
 service:
   type: ClusterIP
@@ -100,9 +104,3 @@ persistence:
   #   lun: 0
   #   fsType: ext4
   #   readOnly: false
-
-securityContext:
-  seLinuxOptions: 
-    role: system_r
-    type: container_t
-    user: system_u

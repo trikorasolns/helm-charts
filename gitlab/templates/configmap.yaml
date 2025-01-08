@@ -10,9 +10,9 @@ data:
       postgresql['enable'] = false
       gitlab_rails['db_username'] = {{ .Values.persistence.dbUserName | quote }}
       gitlab_rails['db_password'] = {{ .Values.persistence.dbPassword | quote }}
-      gitlab_rails['db_host'] = "postgresql.gitlab.svc.cluster.local"
+      gitlab_rails['db_host'] = {{ .Values.persistence.dbHost | quote }}
       gitlab_rails['db_port'] = "5432"
-      gitlab_rails['db_database'] = "gitlab"
+      gitlab_rails['db_database'] = {{ .Values.persistence.dbName | quote }}
       gitlab_rails['db_adapter'] = 'postgresql'
       gitlab_rails['db_encoding'] = 'utf8'
       gitlab_rails['redis_host'] = 'redis'

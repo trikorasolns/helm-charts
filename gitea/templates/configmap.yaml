@@ -7,9 +7,6 @@ metadata:
     {{- include "gitea.labels" . | nindent 4 }}
 data:
   GITEA__database__DB_TYPE: postgres
-  GITEA__database__HOST: db:5432
-  GITEA__database__NAME: gitea
-  GITEA__database__USER: gitea
-  POSTGRES_DB: {{ .Values.database.name }}
-  USER: {{ .Values.database.user }}
-  HOST: {{ .Values.database.host }}
+  GITEA__database__HOST: "{{ .Values.persistence.dbHost }}:{{ .Values.persistence.dbPort }}"
+  GITEA__database__NAME: {{ .Values.persistence.dbName }}
+  GITEA__database__USER: {{ .Values.persistence.dbUserName }}
