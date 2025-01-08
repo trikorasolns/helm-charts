@@ -38,17 +38,17 @@ spec:
                 name: {{ include "glpi.fullname" . }}
             - secretRef:
                 name: {{ include "glpi.fullname" . }}
-          volumeMounts:
-            - name: {{ include "glpi.fullname" . }}-config
-              mountPath: {{ .Values.persistence.mountPaths.config }}
-            - name: {{ include "glpi.fullname" . }}-files
-              mountPath: {{ .Values.persistence.mountPaths.files }}
-            - name: {{ include "glpi.fullname" . }}-plugins
-              mountPath: {{ .Values.persistence.mountPaths.plugins }}
+          # volumeMounts:
+          #   - name: {{ include "glpi.fullname" . }}-config
+          #     mountPath: {{ .Values.persistence.mountPaths.config }}
+          #   - name: {{ include "glpi.fullname" . }}-files
+          #     mountPath: {{ .Values.persistence.mountPaths.files }}
+          #   - name: {{ include "glpi.fullname" . }}-plugins
+          #     mountPath: {{ .Values.persistence.mountPaths.plugins }}
             # - name: {{ include "glpi.fullname" . }}-marketplace
             #   mountPath: {{ .Values.persistence.mountPaths.marketplace }}
-            - name: {{ include "glpi.fullname" . }}-log
-              mountPath: {{ .Values.persistence.mountPaths.log }}
+            # - name: {{ include "glpi.fullname" . }}-log
+            #   mountPath: {{ .Values.persistence.mountPaths.log }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -93,52 +93,57 @@ spec:
               mountPath: {{ .Values.persistence.mountPaths.files }}
             - name: {{ include "glpi.fullname" . }}-plugins
               mountPath: {{ .Values.persistence.mountPaths.plugins }}
-            - name: {{ include "glpi.fullname" . }}-marketplace
-              mountPath: {{ .Values.persistence.mountPaths.marketplace }}
+            # - name: {{ include "glpi.fullname" . }}-marketplace
+            #   mountPath: {{ .Values.persistence.mountPaths.marketplace }}
             - name: {{ include "glpi.fullname" . }}-log
               mountPath: {{ .Values.persistence.mountPaths.log }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: {{ .Chart.Name }}-crond
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{- if .Values.image.tag }}{{ .Values.image.tag }}-crond{{- else }}crond"
+{{- /*
+        # - name: {{ .Chart.Name }}-crond
+        #   securityContext:
+        #     {{- toYaml .Values.securityContext | nindent 12 }}
+        #   image: "{{ .Values.image.repository }}:{{- if .Values.image.tag }}{{ .Values.image.tag }}-crond{{- else }}crond"
           
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{- end }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "glpi.fullname" . }}
-            - secretRef:
-                name: {{ include "glpi.fullname" . }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-            - name: https
-              containerPort: 443
-              protocol: TCP
-            - name: ssh
-              containerPort: 22
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          volumeMounts:
-            - name: {{ include "glpi.fullname" . }}-config
-              mountPath: {{ .Values.persistence.mountPaths.config }}
-            - name: {{ include "glpi.fullname" . }}-files
-              mountPath: {{ .Values.persistence.mountPaths.files }}
-            - name: {{ include "glpi.fullname" . }}-plugins
-              mountPath: {{ .Values.persistence.mountPaths.plugins }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+        #   image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        #   {{- end }}
+        #   imagePullPolicy: {{ .Values.image.pullPolicy }}
+        #   envFrom:
+        #     - configMapRef:
+        #         name: {{ include "glpi.fullname" . }}
+        #     - secretRef:
+        #         name: {{ include "glpi.fullname" . }}
+        #   ports:
+        #     - name: http
+        #       containerPort: 80
+        #       protocol: TCP
+        #     - name: https
+        #       containerPort: 443
+        #       protocol: TCP
+        #     - name: ssh
+        #       containerPort: 22
+        #       protocol: TCP
+        #   livenessProbe:
+        #     httpGet:
+        #       path: /
+        #       port: http
+        #   readinessProbe:
+        #     httpGet:
+        #       path: /
+        #       port: http
+        #   volumeMounts:
+        #     - name: {{ include "glpi.fullname" . }}-config
+        #       mountPath: {{ .Values.persistence.mountPaths.config }}
+        #       readOnly: true
+        #     - name: {{ include "glpi.fullname" . }}-files
+        #       mountPath: {{ .Values.persistence.mountPaths.files }}
+        #       readOnly: true
+        #     - name: {{ include "glpi.fullname" . }}-plugins
+        #       mountPath: {{ .Values.persistence.mountPaths.plugins }}
+        #       readOnly: true
+        #   resources:
+        #     {{- toYaml .Values.resources | nindent 12 }}
+*/}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
