@@ -24,6 +24,6 @@ version: 0.1.1
 # "9.3.1"
 appVersion: "10.0.5"
 
-maintainer:
+maintainers:
 - name: Antonio C.
   email: ac (at) trikorasolutions (dot) com

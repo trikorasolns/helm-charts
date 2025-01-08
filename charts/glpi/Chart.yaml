@@ -23,7 +23,7 @@ version: 0.0.1
 # It is recommended to use it with quotes.
 appVersion: "0.0.10"
 
-maintainer:
+maintainers:
 - name: Antonio C.
   email: ac (at) trikorasolutions (dot) com
   # url: str(required=False)
