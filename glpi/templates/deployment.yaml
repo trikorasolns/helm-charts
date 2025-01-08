@@ -164,6 +164,6 @@ spec:
         - name: {{ include "glpi.fullname" . }}-marketplace
           persistentVolumeClaim:
             claimName: {{ include "glpi.fullname" . }}-marketplace
-        - name: {{ include "glpi.fullname" . }}-marketplace
+        - name: {{ include "glpi.fullname" . }}-plugins
           persistentVolumeClaim:
-            claimName: {{ include "glpi.fullname" . }}-marketplace
+            claimName: {{ include "glpi.fullname" . }}-plugins
