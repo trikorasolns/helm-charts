@@ -91,9 +91,7 @@ persistence:
   volumeWebData: 20Gi
   volumeWebConfigs: 1Gi
   volumeWebAddons: 5Gi
-
-database:
-  name: postgres
-  user: odoo
-  host: postgresql.odoo.svc.cluster.local
+  dbName: postgres
+  dbUser: odoo
+  dbHost: postgresql.odoo.svc.cluster.local
   

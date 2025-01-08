@@ -8,7 +8,7 @@ metadata:
 data:
   GITLAB_OMNIBUS_CONFIG: | 
       postgresql['enable'] = false
-      gitlab_rails['db_username'] = {{ .Values.persistence.dbUserName | quote }}
+      gitlab_rails['db_username'] = {{ .Values.persistence.dbUser | quote }}
       gitlab_rails['db_password'] = {{ .Values.persistence.dbPassword | quote }}
       gitlab_rails['db_host'] = {{ .Values.persistence.dbHost | quote }}
       gitlab_rails['db_port'] = "5432"

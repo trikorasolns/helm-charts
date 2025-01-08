@@ -88,10 +88,8 @@ persistence:
   mysqlDataSize: 3Gi
   mountPath: "/var/lib/mysql:Z"
   # mountPath: "/bitnami/mariadb:Z"
-
-database: 
   dbName: mariadb
+  dbUser: mariadb
   dbPassword: admin123
   dbRootPassword: admin123
-  dbUser: mariadb
   localDbUser: 1

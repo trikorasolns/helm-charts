@@ -7,8 +7,8 @@ metadata:
     {{- include "mariadb.labels" . | nindent 4 }}
 data:
   #MYSQL_DATABASE
-  MARIADB_DATABASE: {{ .Values.database.dbName }}
-  MARIADB_MYSQL_LOCALHOST_USER: "{{ .Values.database.localDbUser }}"
+  MARIADB_DATABASE: {{ .Values.persistence.dbName }}
+  MARIADB_MYSQL_LOCALHOST_USER: "{{ .Values.persistence.localDbUser }}"
   MARIADB_MYSQL_LOCALHOST_GRANTS: "RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR"
   # MYSQL_USER
-  MARIADB_USER: {{ .Values.database.dbUser }}
+  MARIADB_USER: {{ .Values.persistence.dbUser }}

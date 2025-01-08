@@ -99,6 +99,7 @@ affinity: {}
 persistence:
   dbName: glpi
   dbUser: glpi
+  dbPassword: glpitemplatedefault
   volumeFileSize: 5Gi
   volumeLogSize: 1Gi
   # volumePluginSize: 1Gi
@@ -111,11 +112,6 @@ persistence:
     marketplace: "/var/www/html/glpi/marketplace:Z"
     log: "/var/log/glpi:Z"
     # plugins: "/var/www/html/plugins:Z"
-
-database: 
-  dbName: glpi
-  dbUser: glpi
-  dbPassword: glpi
 
 # glpi:
   # TODO: Generate password if undefined

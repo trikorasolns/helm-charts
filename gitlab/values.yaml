@@ -86,11 +86,10 @@ tolerations: []
 affinity: {}
 
 persistence:
-  dbUserName: gitlab
+  dbUser: gitlab
   dbPassword: admin123
   volumeVarOptLocal: 20Gi
   volumeEtcLocal: 5Gi
   volumeVarLogLocal: 5Gi
   mysqlDbPassword: admin123
   storageClassName: local-storage
-

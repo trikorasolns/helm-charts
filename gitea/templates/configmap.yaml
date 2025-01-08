@@ -9,4 +9,4 @@ data:
   GITEA__database__DB_TYPE: postgres
   GITEA__database__HOST: "{{ .Values.persistence.dbHost }}:{{ .Values.persistence.dbPort }}"
   GITEA__database__NAME: {{ .Values.persistence.dbName }}
-  GITEA__database__USER: {{ .Values.persistence.dbUserName }}
+  GITEA__database__USER: {{ .Values.persistence.dbUser }}
