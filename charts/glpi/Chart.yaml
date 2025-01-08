@@ -24,6 +24,6 @@ version: 0.0.1
 appVersion: "0.0.10"
 
 maintainers:
-- name: Antonio C.
+- name: jacobdotcosta
   email: ac (at) trikorasolutions (dot) com
   # url: str(required=False)
