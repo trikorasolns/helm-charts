@@ -24,5 +24,5 @@ version: 0.1.0
 appVersion: "2.401.3-lts"
 
 maintainer:
-  name: Antonio C.
+- name: Antonio C.
   email: ac (at) trikorasolutions (dot) com
