@@ -47,9 +47,11 @@ securityContext: {}
   # fsGroup: 1000
   # fsUser: 1000
 
-initSecurityContext: {}
-  # runAsUser: 33
+initSecurityContext:
+  runAsUser: 33
   # runAsGroup: 33
+  #runAsUser: 0
+  #allowPrivilegeEscalation: true
   # fsGroup: 1000
   # fsUser: 1000
 
