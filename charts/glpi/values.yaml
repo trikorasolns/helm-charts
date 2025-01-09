@@ -107,11 +107,11 @@ persistence:
   mysqlDbPassword: admin123
   storageClassName: local-storage
   mountPaths:
-    config: "/etc/glpi:Z"
-    files: "/var/lib/glpi:Z"
-    marketplace: "/var/www/html/glpi/marketplace:Z"
-    log: "/var/log/glpi:Z"
-    # plugins: "/var/www/html/plugins:Z"
+    config: "/etc/glpi"
+    files: "/var/lib/glpi"
+    marketplace: "/var/www/html/glpi/marketplace"
+    log: "/var/log/glpi"
+    # plugins: "/var/www/html/plugins"
 
 # glpi:
   # TODO: Generate password if undefined

@@ -93,5 +93,6 @@ persistence:
   volumeWebAddons: 5Gi
   dbName: postgres
   dbUser: odoo
+  dbPassword: changeTheDetaulfDbPasswordForOdoo
   dbHost: postgresql.odoo.svc.cluster.local
   

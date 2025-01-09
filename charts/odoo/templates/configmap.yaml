@@ -6,6 +6,6 @@ metadata:
   labels:
     {{- include "odoo.labels" . | nindent 4 }}
 data:
-  POSTGRES_DB: {{ .Values.persistence.name }}
-  USER: {{ .Values.persistence.user }}
+  POSTGRES_DB: {{ .Values.persistence.dbName }}
+  USER: {{ .Values.persistence.dbUser }}
   HOST: {{ .Values.persistence.dbHost }}

@@ -86,8 +86,7 @@ persistence:
   enabled: true
   storageClassName: ""
   mysqlDataSize: 3Gi
-  mountPath: "/var/lib/mysql:Z"
-  # mountPath: "/bitnami/mariadb:Z"
+  mountPath: "/var/lib/mysql"
   dbName: mariadb
   dbUser: mariadb
   dbPassword: admin123
