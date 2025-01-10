@@ -125,6 +125,10 @@ persistence:
     log: "/var/log/glpi"
     # plugins: "/var/www/html/plugins"
 
-# glpi:
-  # TODO: Generate password if undefined
-  # sysPassword: glpi
+# Application related variables.
+application: {}
+  # Text for the glpicrypt.enc file tar.gz and base64 encoded.
+  # To generate this file execute the following command on an existing 
+  # installation:
+  # tar czvf - glpicrypt.key | base64 > glpicrypt.tgz.enc
+  # glpicrypt: 
