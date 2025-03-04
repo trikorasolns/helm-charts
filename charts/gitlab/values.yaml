@@ -93,3 +93,8 @@ persistence:
   volumeVarLogLocal: 5Gi
   mysqlDbPassword: admin123
   storageClassName: local-storage
+
+gitlab:
+  global:
+    hosts:
+      domain: acme.org
