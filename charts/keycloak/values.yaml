@@ -83,3 +83,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistence:
+  dbType: postgres
+  dbPort: 5432
+  dbName: keycloak
+  dbUser: keycloak
+  dbPassword: admin123
