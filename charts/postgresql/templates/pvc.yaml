@@ -1,0 +1,29 @@
+{{- if not .Values.persistence.iscsi }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "postgresql.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ include "postgresql.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{ toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.dbDataSize }}
+  {{- if .Values.persistence.storageClassName }}
+  storageClassName: {{ .Values.persistence.storageClassName | quote }}
+  {{- end }}
+  {{- if .Values.persistence.selector }}
+  selector:
+    matchExpressions:
+      - key: {{ .Values.persistence.selector.key }}
+        operator: {{ .Values.persistence.selector.operator }}
+        values: {{ .Values.persistence.selector.values }}
+  {{- end }}
+{{- end }}

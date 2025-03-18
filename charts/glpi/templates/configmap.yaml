@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "glpi.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "glpi.labels" . | nindent 4 }}
+data:
+  # GLPI_LANG: "pt_BR"
+  # GLPI_LANG: "es_ES"
+  GLPI_LANG: en_GB
+  MARIADB_HOST: mariadb.{{ .Release.Namespace }}.svc.cluster.local
+  MARIADB_PORT: "3306"
+  MARIADB_DATABASE: {{ .Values.persistence.dbName }}
+  MARIADB_USER: {{ .Values.persistence.dbUser }}
+  VERSION: {{ .Values.image.tag | default .Chart.AppVersion }}
+  PLUGINS: all
+  # v10
+  GLPI_LANGUAGE: en_GB
+  GLPI_DB_HOST: mariadb.{{ .Release.Namespace }}.svc.cluster.local
+  GLPI_DB_PORT: "3306"
+  GLPI_DB_NAME: {{ .Values.persistence.dbName }}
+  GLPI_DB_USER_NAME: {{ .Values.persistence.dbUser }}

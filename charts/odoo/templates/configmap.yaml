@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "odoo.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "odoo.labels" . | nindent 4 }}
+data:
+  POSTGRES_DB: {{ .Values.persistence.dbName }}
+  USER: {{ .Values.persistence.dbUser }}
+  HOST: {{ .Values.persistence.dbHost }}

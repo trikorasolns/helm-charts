@@ -1,0 +1,59 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: {{ include "postgresql.fullname" . }}
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "postgresql.fullname" . }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "postgresql.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "postgresql.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3306
+              name: postgresqldb
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "postgresql.fullname" . }}
+            - secretRef:
+                name: {{ include "postgresql.fullname" . }}
+          volumeMounts:
+            - mountPath: {{ .Values.persistence.mountPath }}
+              name: "postgresql-data"
+      volumes:
+        - name: "postgresql-data"
+        {{- if not .Values.persistence.iscsi }}
+          persistentVolumeClaim:
+            claimName: {{ include "postgresql.fullname" . }}
+        {{- else }}
+          iscsi:
+            targetPortal: {{ .Values.persistence.iscsi.targetPortal }}
+            portals: {{ .Values.persistence.iscsi.portals }}
+            iqn: {{ .Values.persistence.iscsi.iqn }}
+            lun: {{ .Values.persistence.iscsi.lun }}
+            fsType: {{ .Values.persistence.iscsi.fsType }}
+            readOnly: {{ .Values.persistence.iscsi.readOnly }}
+        {{- end }}
