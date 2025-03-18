@@ -1,8 +1,50 @@
-= helm-charts
+= Trikora Solutions Helm Charts
+Antonio C. <ac (at) trikorasolutions (dot) com>
+:revdate: {docdate}
+:icons: font
 :toc: left
-:description: Helm Charts
+:toclevels: 3
+:toc-title: Table of Contents
+:description: Trikora Solutions Helm Charts
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+== Helm Charts
+
+This project includes Helm Charts to deploy the following applications.
+
+[%header, cols="40%h,50%m,10%"]
+|===
+
+| Application | Latest tested version | Stable
+| link:https://about.gitea.com/[Gitea] (WIP) | 1.22.6 | [.red]#icon:times[]#
+| link:https://about.gitlab.com/[GitLab] | 15.4.0-ee.0 | [.lime]#icon:check[]#
+| link:https://glpi-project.org/[GLPI] | 10.0.9 | [.lime]#icon:check[]#
+| link:https://grafana.com/[Grafana] | 11.4.0 | [.lime]#icon:check[]#
+| link:https://www.jenkins.io/[Jenkins] (WIP) | 2.401.3-lts | [.yellow]#icon:warning[]#
+| link:https://www.keycloak.org/[Keycloak] | 26.1.3 | [.lime]#icon:check[]#
+| link:https://mariadb.org/[MariaDB] | 10.6 | [.lime]#icon:check[]#
+| link:https://www.odoo.com/[Odoo] | 16.0 | [.lime]#icon:check[]#
+| link:https://www.pgadmin.org/[pgAdmin] | 6 | [.lime]#icon:check[]#
+| link:https://www.phpmyadmin.net/[PHP My Admin] | 5.2.1 | [.lime]#icon:check[]#
+| link:https://www.postgresql.org/[PosgreSQL] | 12.5 | [.lime]#icon:check[]#
+| link:https://redis.io/[Redis] | 7.0.0 | [.lime]#icon:check[]#
+| link:https://www.sonarsource.com/products/sonarqube/[Sonarqube] (WIP) | 1.16.0 | [.red]#icon:times[]#
+
+|===
+
 
 == Install this Helm repository
+
+[.lead]
+To install this repository execute the following commands on a bash shell.
+
+Add the repository.
 
 [source,bash]
 ----
