@@ -1,3 +1,26 @@
 = helm-charts
 :toc: left
 :description: Helm Charts
+
+== Install this Helm repository
+
+[source,bash]
+----
+helm repo add trikorasolns https://trikorasolns.github.io/helm-charts
+----
+
+This will show up a messsage stating that `"trikorasolns" has been added to your repositories`
+
+The update the repositories.
+
+[source,bash]
+----
+helm repo update
+----
+
+The output will be something like.
+
+[source,]
+----
+...Successfully got an update from the "trikorasolns" chart repository
+----
