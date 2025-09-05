@@ -25,10 +25,8 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: 
+podSecurityContext:
   fsGroup: 101
-  #runAsUser: 101
-  #runAsGroup: 101
 
 securityContext: {}
   # capabilities:
@@ -88,7 +86,7 @@ persistence:
   storageClassName: local-storage
   # If not set a RANDOM password will be generated
   # dbRootPassword: 
-  # Set MARIADB_MYSQL_LOCALHOST_USER to a non-empty value to create the mysql@locahost database user. 
+  # Set MARIADB_MYSQL_LOCALHOST_USER to a non-empty value to create the mysql@locahost database user.
   # This user is especially useful for a variety of health checks and backup scripts.
   volumeWebData: 20Gi
   volumeWebConfigs: 1Gi
@@ -97,4 +95,3 @@ persistence:
   dbUser: odoo
   dbPassword: changeTheDetaulfDbPasswordForOdoo
   dbHost: postgresql.odoo.svc.cluster.local
-  
