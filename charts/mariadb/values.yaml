@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: docker.io/mariadb
-  #repository: quay.io/centos7/mariadb-103-centos7
+  # repository: quay.io/centos7/mariadb-103-centos7
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "10.2.14"
@@ -27,8 +27,8 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 999
 
 securityContext: {}
   # capabilities:

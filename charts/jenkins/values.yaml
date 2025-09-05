@@ -90,3 +90,5 @@ affinity: {}
 persistence:
   volumeJenkinsData: 30Gi
   storageClassName: local-storage
+
+cascConfig:
