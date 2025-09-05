@@ -85,7 +85,7 @@ affinity: {}
 persistence:
   storageClassName: local-storage
   # If not set a RANDOM password will be generated
-  # dbRootPassword: 
+  # dbRootPassword:
   # Set MARIADB_MYSQL_LOCALHOST_USER to a non-empty value to create the mysql@locahost database user.
   # This user is especially useful for a variety of health checks and backup scripts.
   volumeWebData: 20Gi

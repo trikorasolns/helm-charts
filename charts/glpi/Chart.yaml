@@ -3,7 +3,7 @@ name: glpi
 description: Deploy GLPI application
 
 home: https://github.com/trikorasolns/glpi-container
-sources: 
+sources:
 - https://github.com/trikorasolns/glpi-container
 
 keywords:
