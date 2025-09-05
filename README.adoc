@@ -53,7 +53,7 @@ helm repo add trikorasolns https://trikorasolns.github.io/helm-charts
 
 This will show up a messsage stating that `"trikorasolns" has been added to your repositories`
 
-The update the repositories.
+Then update the repositories.
 
 [source,bash]
 ----
@@ -64,5 +64,7 @@ The output will be something like.
 
 [source,]
 ----
+...
 ...Successfully got an update from the "trikorasolns" chart repository
+...
 ----

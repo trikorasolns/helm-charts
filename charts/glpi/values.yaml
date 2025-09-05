@@ -30,22 +30,23 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # runAsUser: 33
-  # runAsGroup: 33
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 33
+  #runAsUser: 33
+  #runAsGroup: 33
+  #fsUser: 33
 
-securityContext: {}
+securityContext:
+  runAsUser: 33
+  # fsGroup: 33
+  # fsUser: 33
+  # runAsGroup: 33
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 48
-  # runAsUser: 33
-  # runAsGroup: 33
-  # fsGroup: 1000
-  # fsUser: 1000
 
 initSecurityContext:
   runAsUser: 33

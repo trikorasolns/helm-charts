@@ -62,7 +62,7 @@ spec:
           #   timeoutSeconds: 2
           volumeMounts:
             - name: {{ include "odoo.fullname" . }}-web-data
-              mountPath: /var/lib/odoo
+              mountPath:  
             - name: {{ include "odoo.fullname" . }}-web-configs
               mountPath: /etc/odoo
             - name: {{ include "odoo.fullname" . }}-web-addons
