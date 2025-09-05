@@ -32,14 +32,9 @@ podAnnotations: {}
 
 podSecurityContext:
   fsGroup: 33
-  #runAsUser: 33
-  #runAsGroup: 33
-  #fsUser: 33
 
 securityContext:
   runAsUser: 33
-  # fsGroup: 33
-  # fsUser: 33
   # runAsGroup: 33
   # capabilities:
   #   drop:
@@ -51,10 +46,6 @@ securityContext:
 initSecurityContext:
   runAsUser: 33
   # runAsGroup: 33
-  #runAsUser: 0
-  #allowPrivilegeEscalation: true
-  # fsGroup: 1000
-  # fsUser: 1000
 
 service:
   # type: LoadBalancer
@@ -129,7 +120,7 @@ persistence:
 # Application related variables.
 application: {}
   # Text for the glpicrypt.enc file tar.gz and base64 encoded.
-  # To generate this file execute the following command on an existing 
+  # To generate this file execute the following command on an existing
   # installation:
   # tar czvf - glpicrypt.key | base64 > glpicrypt.tgz.enc
-  # glpicrypt: 
+  # glpicrypt:

@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "jenkins.labels" . | nindent 4 }}
 data:
-  {{- include "jenkins.app.cascConfig" . | nindent 4 }}
+  {{- include "jenkins.cascConfig" . | nindent 4 }}
 ---
 apiVersion: v1
 kind: ConfigMap
