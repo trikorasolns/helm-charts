@@ -122,3 +122,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistence:
+  dataSize: 1Gi
