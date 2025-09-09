@@ -11,16 +11,16 @@ data:
       manage_storage_directories['manage_etc'] = false;
       postgresql['enable'] = false;
       redis['enable'] = false;
+      gitlab_rails['db_adapter'] = 'postgresql';
+      gitlab_rails['db_database'] = '{{ .Values.persistence.dbName }}';
+      gitlab_rails['db_encoding'] = 'utf8';
+      gitlab_rails['db_host'] = {{ .Values.persistence.dbHost | quote }};
       gitlab_rails['db_username'] = {{ .Values.persistence.dbUser | quote }};
       gitlab_rails['db_password'] = {{ .Values.persistence.dbPassword | quote }};
-      gitlab_rails['db_host'] = {{ .Values.persistence.dbHost | quote }};
       gitlab_rails['db_port'] = "5432";
-      gitlab_rails['db_database'] = {{ .Values.persistence.dbName | quote }};
-      gitlab_rails['db_adapter'] = 'postgresql';
-      gitlab_rails['db_encoding'] = 'utf8';
+      gitlab_rails['gitlab_shell_ssh_port'] = 30022;
       gitlab_rails['redis_host'] = 'redis';
       gitlab_rails['redis_port'] = '6379';
-      gitlab_rails['gitlab_shell_ssh_port'] = 30022;
       gitlab_rails['redis_host'] = "redis.gitlab.svc.cluster.local";
       gitlab_rails['redis_port'] = 6379;
 {{- if and .Values.gitlab.smtp }} {{if .Values.gitlab.smtp.enable }}
