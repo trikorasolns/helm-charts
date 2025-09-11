@@ -17,6 +17,19 @@ entries:
   gitlab:
   - apiVersion: v2
     appVersion: 15.4.0-ee.0
+    created: "2025-09-11T06:59:15.929704208Z"
+    description: A Helm chart for Kubernetes
+    digest: 86225db314386ed0ecaddb24f0996ad11f2745863799e649277b534d25de66cc
+    maintainers:
+    - email: ac@trikorasolutions.com
+      name: jacobdotcosta
+    name: gitlab
+    type: application
+    urls:
+    - https://github.com/trikorasolns/helm-charts/releases/download/gitlab-0.1.1/gitlab-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 15.4.0-ee.0
     created: "2025-03-18T18:00:46.49502889Z"
     description: A Helm chart for Kubernetes
     digest: ca97ad4abb0d96d19fcb9a23fc1cec191e10739ef20f8b21acc0a00765c32801
@@ -252,4 +265,4 @@ entries:
     urls:
     - https://github.com/trikorasolns/helm-charts/releases/download/sonarqube-0.1.0/sonarqube-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-05T22:24:27.016430462Z"
+generated: "2025-09-11T06:59:15.929720909Z"
