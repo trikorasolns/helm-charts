@@ -90,3 +90,8 @@ persistence:
   dbName: keycloak
   dbUser: keycloak
   dbPassword: admin123
+
+app:
+  bootstrapAdminUsername: admin
+  bootstrapAdminPassword: admin
+  proxy: edge

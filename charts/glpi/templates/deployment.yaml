@@ -49,6 +49,8 @@ spec:
               mountPath: {{ .Values.persistence.mountPaths.marketplace }}
             - name: {{ include "glpi.fullname" . }}-log
               mountPath: {{ .Values.persistence.mountPaths.log }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.initSecurityContext | nindent 12 }}
       containers:
