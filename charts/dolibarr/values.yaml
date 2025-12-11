@@ -7,19 +7,19 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: docker.io/dolibarr/dolibarr
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
 
-#This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -32,7 +32,7 @@ serviceAccount:
   name: ""
 
 # This is for setting Kubernetes Annotations to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ 
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
@@ -95,7 +95,7 @@ readinessProbe:
     path: /
     port: http
 
-#This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -104,24 +104,37 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
+volumes:
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
+- name: dolibarr-documents
+  persistentVolumeClaim:
+    claimName: dolibarr-documents
+- name: dolibarr-custom
+  persistentVolumeClaim:
+    claimName: dolibarr-custom
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
+volumeMounts:
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
+- name: dolibarr-documents
+  mountPath: "/var/www/documents"
+  readOnly: false
+- name: dolibarr-custom
+  mountPath: "/var/www/html/custom"
+  readOnly: false
 
+persistence:
+  storageClassName: local-storage
+  volumeDolibarrDocuments: 20Gi
+  volumeDolibarrCustom: 1Gi
+  
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
-
-app:
-  adminUser: admin
-  adminPassword: admin1234
