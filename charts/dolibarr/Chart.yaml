@@ -1,6 +1,6 @@
 apiVersion: v2
 name: dolibarr
-description: A Helm chart for Kubernetes
+description: Chart to deploy Dolibarr on a Kubernetes cluster.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
