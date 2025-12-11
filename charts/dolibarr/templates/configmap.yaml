@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include dolibarr.fullname . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include dolibarr.labels . | nindent 4 }}
+data:
+  DOLI_INIT_DEMO: {{ doli_init_demo | default(0) }}
+  DOLI_DB_HOST: {{doli_db_host | default(pod_name + '_pgsql_' + doli_db_name) }}
+  DOLI_DB_HOST_PORT: {{doli_db_port | default('5432') }}
+  DOLI_DB_TYPE: {{doli_db_type | default('pgsql') }}
+  DOLI_DB_NAME: {{ doli_db_name }}
+  DOLI_DB_USER: {{ .Values.persistence.dbUser }}
+  DOLI_URL_ROOT: {{doli_url_root | default('http://0.0.0.0') }}
+  DOLI_ADMIN_LOGIN: {{ .Values.app.adminUser }}
+  DOLI_CRON: {{doli_cron | default(0) }}
+  DOLI_CRON_KEY: {{doli_cron_key | default('mycronsecurekey') }}
+  DOLI_COMPANY_NAME: {{doli_company_name | default('MyBigCompany') }}
+  DOLI_COMPANY_COUNTRYCODE: {{doli_company_countrycode | default('ES') }}
+  WWW_USER_ID: {{www_user_id | default('1000') }}
+  WWW_GROUP_ID: {{www_group_id | default('1000') }}
+  DOLI_AUTH: {{ .Values.app.auth }}
