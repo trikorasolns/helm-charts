@@ -12,4 +12,8 @@ data:
   KC_DB_URL_HOST: postgresql.{{ .Release.Namespace }}.svc.cluster.local
   KC_DB_URL_PORT: "{{ .Values.persistence.dbPort }}"
   KC_DB_USERNAME: {{ .Values.persistence.dbUser }}
-  KC_HOSTNAME: localhost
+  KC_HOSTNAME: {{ .host | quote }}
+  KC_BOOTSTRAP_ADMIN_USERNAME: {{ .Values.app.bootstrapAdminUsername }}
+{{- if .Values.app.proxy }}
+  KC_PROXY: {{ .Values.app.proxy }}
+{{- end }}

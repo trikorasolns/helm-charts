@@ -30,15 +30,11 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           args: ["start-dev"]
-          env:
-            - name: JAVA_OPTS_APPEND
-              value: "-Djava.net.preferIPv4Stack=true"
-            - name: KEYCLOAK_ADMIN
-              value: "admin"
-            - name: KEYCLOAK_ADMIN_PASSWORD
-              value: "admin"
-            - name: KC_PROXY
-              value: "edge"
+          envFrom:
+            - configMapRef:
+                name: {{ include "keycloak.fullname" . }}
+            - secretRef:
+                name: {{ include "keycloak.fullname" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
