@@ -40,6 +40,11 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "dolibarr.fullname" . }}
+            - secretRef:
+                name: {{ include "dolibarr.fullname" . }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

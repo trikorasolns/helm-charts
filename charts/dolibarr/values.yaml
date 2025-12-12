@@ -38,8 +38,8 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
 
 securityContext: {}
   # capabilities:
@@ -94,6 +94,7 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 60
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -132,7 +133,25 @@ persistence:
   storageClassName: local-storage
   volumeDolibarrDocuments: 20Gi
   volumeDolibarrCustom: 1Gi
-  
+  dbName: dolibarr
+  dbType: pgsql
+  dbPort: 5432
+
+app:
+  adminUser: admin
+  # adminPassword:
+  # dolibarr,ldap,openid,http
+  auth: dolibarr
+  # companyName:
+  companyCountryCode: ES
+  doliCron: 0
+  # doliCronKey: 
+  # Comma-separated list of modules to be activated at install. modUser will always be activated. (Ex: Societe,Facture,Stock).
+  # enableModules: 
+  # Set initDemo to 1 to load the demo data.
+  initDemo: 0
+  # rootUrl: 
+
 nodeSelector: {}
 
 tolerations: []

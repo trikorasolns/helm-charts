@@ -1,23 +1,35 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include dolibarr.fullname . }}
+  name: {{ include "dolibarr.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include dolibarr.labels . | nindent 4 }}
+    {{- include "dolibarr.labels" . | nindent 4 }}
 data:
-  DOLI_INIT_DEMO: {{ doli_init_demo | default(0) }}
-  DOLI_DB_HOST: {{doli_db_host | default(pod_name + '_pgsql_' + doli_db_name) }}
-  DOLI_DB_HOST_PORT: {{doli_db_port | default('5432') }}
-  DOLI_DB_TYPE: {{doli_db_type | default('pgsql') }}
-  DOLI_DB_NAME: {{ doli_db_name }}
+  DOLI_INSTALL_AUTO: {{ default "1" .Values.app.autoInstall | quote }}
+  DOLI_PROD: {{ default "1" .Values.app.prod | quote }}
+  DOLI_INIT_DEMO: {{ default "0" .Values.app.initDemo | quote }}
+  DOLI_DB_HOST: {{ default "postgresql" .Values.persistence.dbHost }}
+  DOLI_DB_HOST_PORT: {{ default "5432" .Values.persistence.dbPort | quote }}
+  DOLI_DB_TYPE: {{ default "pgsql" .Values.persistence.dbType }}
+  DOLI_DB_NAME: {{ .Values.persistence.dbName }}
   DOLI_DB_USER: {{ .Values.persistence.dbUser }}
-  DOLI_URL_ROOT: {{doli_url_root | default('http://0.0.0.0') }}
+  DOLI_URL_ROOT: {{ default "http://0.0.0.0" .Values.app.rootUrl }}
   DOLI_ADMIN_LOGIN: {{ .Values.app.adminUser }}
-  DOLI_CRON: {{doli_cron | default(0) }}
-  DOLI_CRON_KEY: {{doli_cron_key | default('mycronsecurekey') }}
-  DOLI_COMPANY_NAME: {{doli_company_name | default('MyBigCompany') }}
-  DOLI_COMPANY_COUNTRYCODE: {{doli_company_countrycode | default('ES') }}
-  WWW_USER_ID: {{www_user_id | default('1000') }}
-  WWW_GROUP_ID: {{www_group_id | default('1000') }}
+  DOLI_CRON: {{ default "0" .Values.app.doliCron | quote }}
+  {{- if .Values.app.companyName }}
+  DOLI_COMPANY_NAME: {{ .Values.app.companyName }}
+  {{- end }}
+  {{- if .Values.app.companyCountryCode }}
+  DOLI_COMPANY_COUNTRYCODE: {{.Values.app.companyCountryCode }}
+  {{- end }}
+  {{- if .Values.app.wwwUserId }}
+  WWW_USER_ID: {{ default "1000" .Values.app.wwwUserId }}
+  {{- end }}
+  {{- if .Values.app.wwwGroupId }}
+  WWW_GROUP_ID: {{ default "1000" .Values.app.wwwGroupId }}
+  {{- end }}
   DOLI_AUTH: {{ .Values.app.auth }}
+  {{- if .Values.app.enableModules }}
+  DOLI_ENABLE_MODULES: {{ .Values.app.enableModules }}
+  {{- end }}
