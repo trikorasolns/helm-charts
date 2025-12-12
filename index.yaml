@@ -181,6 +181,17 @@ entries:
     urls:
     - https://github.com/trikorasolns/helm-charts/releases/download/mariadb-0.1.0/mariadb-0.1.0.tgz
     version: 0.1.0
+  nodered:
+  - apiVersion: v2
+    appVersion: 4.1.0-20
+    created: "2025-12-12T10:59:23.64831652Z"
+    description: A Helm chart for Kubernetes
+    digest: 0de271d93d4116df4a19ff7dceefa4b9b2bf9288308f3451d6550387e460c6cf
+    name: nodered
+    type: application
+    urls:
+    - https://github.com/trikorasolns/helm-charts/releases/download/nodered-0.1.0/nodered-0.1.0.tgz
+    version: 0.1.0
   odoo:
   - apiVersion: v2
     appVersion: "17.0"
@@ -291,4 +302,4 @@ entries:
     urls:
     - https://github.com/trikorasolns/helm-charts/releases/download/sonarqube-0.1.0/sonarqube-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-11T06:59:35.13646831Z"
+generated: "2025-12-12T10:59:23.989841336Z"
