@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  dolibarr:
+  - apiVersion: v2
+    appVersion: "22"
+    created: "2025-12-12T21:38:36.167975308Z"
+    description: Chart to deploy Dolibarr on a Kubernetes cluster.
+    digest: eae38e8cff3d491f0f44fce6c599321d5c8b584c409820cbb61eafbd37c68e0d
+    name: dolibarr
+    type: application
+    urls:
+    - https://github.com/trikorasolns/helm-charts/releases/download/dolibarr-0.1.0/dolibarr-0.1.0.tgz
+    version: 0.1.0
   gitea:
   - apiVersion: v2
     appVersion: 1.22.6
@@ -302,4 +313,4 @@ entries:
     urls:
     - https://github.com/trikorasolns/helm-charts/releases/download/sonarqube-0.1.0/sonarqube-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-12T10:59:23.989841336Z"
+generated: "2025-12-12T21:38:36.168006035Z"
