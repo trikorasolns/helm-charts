@@ -8,8 +8,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: https
       protocol: TCP
-      name: http
+      name: https
+    # - port: 80
+    #   targetPort: http
+    #   protocol: TCP
+    #   name: http
   selector:
     {{- include "apache-nifi.selectorLabels" . | nindent 4 }}

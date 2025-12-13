@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "apache-nifi.fullname" . }}
   labels:
@@ -23,6 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      replicas: {{ .Values.replicaCount | default 1 }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -47,10 +48,7 @@ spec:
                 name: {{ include "apache-nifi.fullname" . }}
           ports:
             - name: https
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-            - name: http
-              containerPort: {{ .Values.service_http.port }}
+              containerPort: {{ .Values.app.nifiWebHttpsPort | default 8443 }}
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
