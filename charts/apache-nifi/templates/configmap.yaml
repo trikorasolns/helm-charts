@@ -9,3 +9,7 @@ data:
   {{- if .Values.app.singleUserCredentialsUsername }}
   SINGLE_USER_CREDENTIALS_USERNAME: {{ .Values.app.singleUserCredentialsUsername }}
   {{- end }}
+  NIFI_WEB_HTTPS_HOST: 
+  {{- if .Values.app.nifiWebHttpsPort }}
+  NIFI_WEB_HTTPS_PORT: {{ .Values.app.nifiWebHttpsPort | quote }}
+  {{- end }}

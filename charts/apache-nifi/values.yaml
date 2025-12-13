@@ -41,7 +41,10 @@ podLabels: {}
 podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
   # capabilities:
   #   drop:
   #   - ALL
@@ -54,13 +57,7 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 8443
-
-service_http:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 8080
+  port: 443
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -93,13 +90,29 @@ resources: {}
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
+  # tcpSocket:
   httpGet:
-    path: /
+    path: /nifi-api/access
     port: https
+    scheme: HTTPS
+    # host: apache-nifi-0
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
 readinessProbe:
+  # tcpSocket:
   httpGet:
-    path: /
+    path: /nifi-api/access
     port: https
+    scheme: HTTPS
+    # host: apache-nifi-0
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -193,7 +206,8 @@ tolerations: []
 
 affinity: {}
 
-app: {}
+app:
+  nifiWebHttpsPort: 8443
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin
   #singleUserCredentialsPassword: admin
