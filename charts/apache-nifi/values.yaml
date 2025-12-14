@@ -90,24 +90,24 @@ resources: {}
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
-  # tcpSocket:
-  httpGet:
-    path: /nifi-api/access
+  tcpSocket:
     port: https
-    scheme: HTTPS
-    # host: apache-nifi-0
+  # httpGet:
+  #   path: /nifi-api/access
+  #   port: https
+  #   scheme: HTTPS
   initialDelaySeconds: 60
   periodSeconds: 30
   timeoutSeconds: 10
   successThreshold: 1
   failureThreshold: 3
 readinessProbe:
-  # tcpSocket:
-  httpGet:
-    path: /nifi-api/access
+  tcpSocket:
     port: https
-    scheme: HTTPS
-    # host: apache-nifi-0
+  # httpGet:
+  #   path: /nifi-api/access
+  #   port: https
+  #   scheme: HTTPS
   initialDelaySeconds: 60
   periodSeconds: 30
   timeoutSeconds: 10
