@@ -178,12 +178,12 @@ volumeMounts:
 - name: apache-nifi-certs
   mountPath: /opt/certs
   readOnly: false
-# - name: apache-nifi-config
-#   mountPath: /opt/nifi/nifi-current/conf
-#   readOnly: false
 - name: apache-nifi-drivers
   mountPath: /opt/nifi/nifi-current/drivers
   readOnly: false
+# - name: apache-nifi-config
+#   mountPath: /opt/nifi/nifi-current/conf
+#   readOnly: false
 - name: apache-nifi-database-repo
   mountPath: /opt/nifi/nifi-current/database_repository
   readOnly: false
@@ -208,6 +208,7 @@ affinity: {}
 
 app:
   nifiWebHttpsPort: 8443
+  nifiWebHttpPort: 8080
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin
   #singleUserCredentialsPassword: admin
