@@ -42,7 +42,7 @@ podSecurityContext:
   fsGroup: 1000
 
 securityContext:
-  fsGroup: 1000
+  # fsGroup: 1000
   runAsUser: 1000
   runAsGroup: 1000
   # capabilities:
@@ -91,7 +91,7 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   tcpSocket:
-    port: https
+    port: http
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -103,7 +103,7 @@ livenessProbe:
   failureThreshold: 3
 readinessProbe:
   tcpSocket:
-    port: https
+    port: http
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -178,12 +178,12 @@ volumeMounts:
 - name: apache-nifi-certs
   mountPath: /opt/certs
   readOnly: false
-- name: apache-nifi-drivers
-  mountPath: /opt/nifi/nifi-current/drivers
-  readOnly: false
 # - name: apache-nifi-config
 #   mountPath: /opt/nifi/nifi-current/conf
 #   readOnly: false
+- name: apache-nifi-drivers
+  mountPath: /opt/nifi/nifi-current/drivers
+  readOnly: false
 - name: apache-nifi-database-repo
   mountPath: /opt/nifi/nifi-current/database_repository
   readOnly: false
@@ -208,7 +208,6 @@ affinity: {}
 
 app:
   nifiWebHttpsPort: 8443
-  nifiWebHttpPort: 8080
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin
   #singleUserCredentialsPassword: admin

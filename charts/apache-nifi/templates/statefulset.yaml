@@ -23,7 +23,6 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      replicas: {{ .Values.replicaCount | default 1 }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -41,6 +40,9 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - sed -i 's/^#\?nifi.web.http.port=.*/nifi.web.http.port=${NIFI_WEB_HTTP_PORT:-8080}/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTP_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.https.port=.*/nifi.web.http.port=/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.https.host=.*/nifi.web.https.host=/' /opt/nifi/nifi-current/conf/nifi.properties && /opt/nifi/scripts/start.sh
           envFrom:
             - configMapRef:
                 name: {{ include "apache-nifi.fullname" . }}
