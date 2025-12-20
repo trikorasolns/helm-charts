@@ -91,7 +91,7 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   tcpSocket:
-    port: http
+    port: https
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -103,7 +103,7 @@ livenessProbe:
   failureThreshold: 3
 readinessProbe:
   tcpSocket:
-    port: http
+    port: https
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -138,11 +138,11 @@ volumes:
     claimName: apache-nifi-drivers
   storage: 256Mi
   accessModes: ReadWriteOnce
-# - name: apache-nifi-config
-#   persistentVolumeClaim:
-#     claimName: apache-nifi-config
-#   storage: 32Mi
-#   accessModes: ReadWriteOnce
+- name: apache-nifi-custom-conf
+  persistentVolumeClaim:
+    claimName: apache-nifi-custom-conf
+  storage: 1Gi
+  accessModes: ReadWriteOnce
 - name: apache-nifi-database-repo
   persistentVolumeClaim:
     claimName: apache-nifi-database-repo
@@ -178,9 +178,9 @@ volumeMounts:
 - name: apache-nifi-certs
   mountPath: /opt/certs
   readOnly: false
-# - name: apache-nifi-config
-#   mountPath: /opt/nifi/nifi-current/conf
-#   readOnly: false
+- name: apache-nifi-custom-conf
+  mountPath: /opt/nifi/nifi-current/custom-conf
+  readOnly: false
 - name: apache-nifi-drivers
   mountPath: /opt/nifi/nifi-current/drivers
   readOnly: false
@@ -207,6 +207,7 @@ tolerations: []
 affinity: {}
 
 app:
+  nifiWebHttpsHost: "0.0.0.0"
   nifiWebHttpsPort: 8443
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin

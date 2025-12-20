@@ -9,7 +9,9 @@ data:
   {{- if .Values.app.singleUserCredentialsUsername }}
   SINGLE_USER_CREDENTIALS_USERNAME: {{ .Values.app.singleUserCredentialsUsername }}
   {{- end }}
-  # NIFI_WEB_HTTPS_HOST: {{ .Values.app.nifiWebHttpsPort | default 8443 | quote }}
+  {{- if .Values.app.nifiWebHttpsHost }}
+  NIFI_WEB_HTTPS_HOST: {{ .Values.app.nifiWebHttpsHost | quote }}
+  {{- end }}
   NIFI_WEB_HTTPS_PORT: {{ .Values.app.nifiWebHttpsPort | default 8443 | quote }}
   # NIFI_WEB_HTTP_HOST: '0.0.0.0'
   NIFI_WEB_HTTP_PORT: {{ .Values.app.nifiWebHttpPort | default 8080 | quote }}

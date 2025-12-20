@@ -40,9 +40,19 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh", "-c"]
-          args:
-            - sed -i 's/^#\?nifi.web.http.port=.*/nifi.web.http.port=${NIFI_WEB_HTTP_PORT:-8080}/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTP_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.https.port=.*/nifi.web.http.port=/' /opt/nifi/nifi-current/conf/nifi.properties && sed -i 's/^#\?nifi.web.https.host=.*/nifi.web.https.host=/' /opt/nifi/nifi-current/conf/nifi.properties && /opt/nifi/scripts/start.sh
+          command:
+          - sh
+          - -c
+          - |
+            sed -i 's/^#\?nifi.flow.configuration.file=.*/nifi.flow.configuration.file='${NIFI_FLOW_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            sed -i 's/^#\?nifi.flow.configuration.archive.dir=.*/nifi.flow.configuration.archive.dir='${NIFI_FLOW_CONFIGURATION_FILE:-".\/custom-conf\/archive\/"}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
+            ../scripts/start.sh
+          #   ../scripts/start.sh
+          #   # sed -i 's/^#\?nifi.web.http.port=.*/nifi.web.http.port=${NIFI_WEB_HTTP_PORT:-8080}/' /opt/nifi/nifi-current/conf/nifi.properties
+          #   # sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTP_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
+          #   # sed -i 's/^#\?nifi.web.https.port=.*/nifi.web.http.port=/' /opt/nifi/nifi-current/conf/nifi.properties
+          #   # sed -i 's/^#\?nifi.web.https.host=.*/nifi.web.https.host=/' /opt/nifi/nifi-current/conf/nifi.properties
           envFrom:
             - configMapRef:
                 name: {{ include "apache-nifi.fullname" . }}
