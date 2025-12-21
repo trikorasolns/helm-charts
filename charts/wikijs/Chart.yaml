@@ -1,0 +1,23 @@
+apiVersion: v2
+name: wikijs
+description: Deploy Wiki.js on Kubernetes
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.1.0
+
+# Using the major version as recomended in the Wiki.js documentation.
+# It's highly recommended that you don't use the latest tag but instead the major version you need, e.g. ghcr.io/requarks/wiki:2
+# It's also possible to point to a specific minor version (e.g. ghcr.io/requarks/wiki:2.5), although you will not automatically get the latest features when pulling the latest image.
+appVersion: "2"
