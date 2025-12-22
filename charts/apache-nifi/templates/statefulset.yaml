@@ -54,8 +54,8 @@ spec:
             # 1 - value to search for
             # 2 - value to replace
             # 3 - file to perform replacement inline (default to nifi_props_file)
-            # sed -i 's/^#\?nifi.flow.configuration.file=.*/nifi.flow.configuration.file='${NIFI_FLOW_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}'/' /opt/nifi/nifi-current/conf/nifi.properties
-            prop_replace 'nifi.flow.configuration.file'                     ${NIFI_FLOW_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}
+            # sed -i 's/^#\?nifi.flow.configuration.file=.*/nifi.flow.configuration.file='${NIFI_FLOW_CONFIGURATION_FILE}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            prop_replace 'nifi.flow.configuration.file'                     ${NIFI_FLOW_CONFIGURATION_FILE}
             # sed -i 's/^#\?nifi.flow.configuration.archive.dir=.*/nifi.flow.configuration.archive.dir='${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}'/' /opt/nifi/nifi-current/conf/nifi.properties
             prop_replace 'nifi.flow.configuration.archive.dir'              ${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}
             # sed -i 's/^#\?nifi.login.identity.provider.configuration.file=.*/nifi.login.identity.provider.configuration.file='${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}'/' /opt/nifi/nifi-current/conf/nifi.properties
@@ -66,6 +66,7 @@ spec:
             prop_replace 'nifi.sensitive.props.key'                         ${NIFI_SENSITIVE_PROPS_KEY}
             # Properties under conf, maybe should be all moved.
             # nifi.authorizer.configuration.file=./conf/authorizers.xml
+            prop_replace 'nifi.authorizer.configuration.file'               ${NIFI_AUTHORIZER_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}
             # nifi.login.identity.provider.configuration.file=./conf/login-identity-providers.xml
             # nifi.state.management.configuration.file=./conf/state-management.xml
             # nifi.state.management.embedded.zookeeper.properties=./conf/zookeeper.properties

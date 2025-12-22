@@ -6,12 +6,20 @@ metadata:
   labels:
     {{- include "apache-nifi.labels" . | nindent 4 }}
 data:
-  {{- if .Values.app.singleUserCredentialsUsername }}
-  SINGLE_USER_CREDENTIALS_USERNAME: {{ .Values.app.singleUserCredentialsUsername }}
-  {{- end }}
+  SINGLE_USER_CREDENTIALS_USERNAME: {{ default uuidv4 .Values.app.singleUserCredentialsUsername }}
   {{- if .Values.app.nifiWebHttpsHost }}
   NIFI_WEB_HTTPS_HOST: {{ .Values.app.nifiWebHttpsHost | quote }}
   {{- end }}
   NIFI_WEB_HTTPS_PORT: {{ .Values.app.nifiWebHttpsPort | default 8443 | quote }}
-  # NIFI_WEB_HTTP_HOST: '0.0.0.0'
+  {{- if .Values.app.nifiWebHttpHost }}
+  NIFI_WEB_HTTP_HOST: {{ .Values.app.nifiWebHttpHost | quote }}
+  {{- end }}
   NIFI_WEB_HTTP_PORT: {{ .Values.app.nifiWebHttpPort | default 8080 | quote }}
+  NIFI_FLOW_CONFIGURATION_FILE: {{ .Values.app.nifiFlowConfigurationFile | quote }}
+  NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR: {{ .Values.app.nifiFlowConfigurationArchiveDir | quote }}
+  NIFI_AUTHORIZER_CONFIGURATION_FILE: {{ .Values.app.nifiAuthorizerConfigurationFile | quote }}
+  NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE: {{ .Values.app.nifiLoginIdentityProviderConfigurationFile | quote }}
+  NIFI_STATE_MANAGEMENT_CONFIGURATION_FILE: {{ .Values.app.nifiStateManagementConfigurationFile | quote }}
+  NIFI_STATE_MANAGEMENT_EMBEDDED_ZOOKEEPER_PROPERTIES: {{ .Values.app.nifiStateManagementEmbeddedZookeeperProperties | quote }}
+  NIFI_SECURITY_KEYSTORE: {{ .Values.app.nifiSecurityKeystore | quote }}
+  NIFI_SECURITY_TRUSTSTORE: {{ .Values.app.nifiSecurityTruststore | quote }}

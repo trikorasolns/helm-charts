@@ -179,7 +179,7 @@ volumeMounts:
   mountPath: /opt/certs
   readOnly: false
 - name: apache-nifi-custom-conf
-  mountPath: /opt/nifi/nifi-current/custom-conf
+  mountPath: /opt/nifi/nifi-current/custom_conf
   readOnly: false
 - name: apache-nifi-drivers
   mountPath: /opt/nifi/nifi-current/drivers
@@ -209,6 +209,17 @@ affinity: {}
 app:
   nifiWebHttpsHost: "0.0.0.0"
   nifiWebHttpsPort: 8443
+  # HTTP deployment is not working
+  # nifiWebHttpHost: 
+  # nifiWebHttpPort: 
+  nifiFlowConfigurationFile: ./custom_conf/flow.json.gz
+  nifiFlowConfigurationArchiveDir: ./custom_conf/archive/
+  nifiAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
+  nifiLoginIdentityProviderConfigurationFile: ./custom_conf/login-identity-providers.xml
+  nifiStateManagementConfigurationFile: ./custom_conf/state-management.xml
+  nifiStateManagementEmbeddedZookeeperProperties: ./custom_conf/zookeeper.properties
+  nifiSecurityKeystore: ./custom_conf/keystore.p12
+  nifiSecurityTruststore: ./custom_conf/truststore.p12
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin
   #singleUserCredentialsPassword: admin
