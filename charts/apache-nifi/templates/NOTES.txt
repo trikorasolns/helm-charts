@@ -20,6 +20,8 @@
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
-1. Get the application credentials by running these commands:
+2. Access the application without ingress by forwarding the port locally.
+  kubectl --namespace {{ .Release.Namespace }} port-forward --address 0.0.0.0 pod/$(kubectl get pod --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "apache-nifi.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath='{.items[0].metadata.name}') 8443:8443
+3. Get the application credentials by running these commands:
   kubectl --namespace {{ .Release.Namespace }} get secret {{ include "apache-nifi.fullname" . }} -o jsonpath='{.data.SINGLE_USER_CREDENTIALS_PASSWORD}' | base64 --decode
   kubectl --namespace {{ .Release.Namespace }} get configmap {{ include "apache-nifi.fullname" . }} -o jsonpath='{.data.SINGLE_USER_CREDENTIALS_USERNAME}'

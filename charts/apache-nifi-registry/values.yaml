@@ -1,4 +1,4 @@
-# Default values for apache-nifi.
+# Default values for apache-nifi-registry.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,7 +7,7 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: apache/nifi
+  repository: apache/nifi-registry
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
@@ -57,7 +57,7 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 443
+  port: 18080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -91,7 +91,7 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   tcpSocket:
-    port: https
+    port: http
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -103,7 +103,7 @@ livenessProbe:
   failureThreshold: 3
 readinessProbe:
   tcpSocket:
-    port: https
+    port: http
   # httpGet:
   #   path: /nifi-api/access
   #   port: https
@@ -128,46 +128,46 @@ volumes:
 #   secret:
 #     secretName: mysecret
 #     optional: false
-- name: apache-nifi-certs
+# - name: apache-nifi-registry-certs
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-certs
+#   storage: 50Mi
+#   accessModes: ReadWriteOnce
+- name: apache-nifi-registry-custom-conf
   persistentVolumeClaim:
-    claimName: apache-nifi-certs
-  storage: 50Mi
-  accessModes: ReadWriteOnce
-- name: apache-nifi-drivers
-  persistentVolumeClaim:
-    claimName: apache-nifi-drivers
-  storage: 256Mi
-  accessModes: ReadWriteOnce
-- name: apache-nifi-custom-conf
-  persistentVolumeClaim:
-    claimName: apache-nifi-custom-conf
+    claimName: apache-nifi-registry-custom-conf
   storage: 1Gi
   accessModes: ReadWriteOnce
-- name: apache-nifi-database-repo
+- name: apache-nifi-registry-drivers
   persistentVolumeClaim:
-    claimName: apache-nifi-database-repo
-  storage: 2Gi
+    claimName: apache-nifi-registry-drivers
+  storage: 256Mi
   accessModes: ReadWriteOnce
-- name: apache-nifi-content-repo
-  persistentVolumeClaim:
-    claimName: apache-nifi-content-repo
-  storage: 20Gi
-  accessModes: ReadWriteOnce
-- name: apache-nifi-nar-repo
-  persistentVolumeClaim:
-    claimName: apache-nifi-nar-repo
-  storage: 2Gi
-  accessModes: ReadWriteOnce
-- name: apache-nifi-provenance-repo
-  persistentVolumeClaim:
-    claimName: apache-nifi-provenance-repo
-  storage: 5Gi
-  accessModes: ReadWriteOnce
-- name: apache-nifi-flowfile-repo
-  persistentVolumeClaim:
-    claimName: apache-nifi-flowfile-repo
-  storage: 10Gi
-  accessModes: ReadWriteOnce
+# - name: apache-nifi-registry-database-repo
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-database-repo
+#   storage: 2Gi
+#   accessModes: ReadWriteOnce
+# - name: apache-nifi-registry-content-repo
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-content-repo
+#   storage: 20Gi
+#   accessModes: ReadWriteOnce
+# - name: apache-nifi-registry-nar-repo
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-nar-repo
+#   storage: 2Gi
+#   accessModes: ReadWriteOnce
+# - name: apache-nifi-registry-provenance-repo
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-provenance-repo
+#   storage: 5Gi
+#   accessModes: ReadWriteOnce
+# - name: apache-nifi-registry-flowfile-repo
+#   persistentVolumeClaim:
+#     claimName: apache-nifi-registry-flowfile-repo
+#   storage: 10Gi
+#   accessModes: ReadWriteOnce
   
 
 # Additional volumeMounts on the output Deployment definition.
@@ -175,30 +175,30 @@ volumeMounts:
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
-- name: apache-nifi-certs
-  mountPath: /opt/certs
+# - name: apache-nifi-registry-certs
+#   mountPath: /opt/certs
+#   readOnly: false
+- name: apache-nifi-registry-custom-conf
+  mountPath: /opt/nifi-registry/nifi-registry-current/custom_conf
   readOnly: false
-- name: apache-nifi-custom-conf
-  mountPath: /opt/nifi/nifi-current/custom_conf
+- name: apache-nifi-registry-drivers
+  mountPath: /opt/nifi-registry/nifi-registry-current/drivers
   readOnly: false
-- name: apache-nifi-drivers
-  mountPath: /opt/nifi/nifi-current/drivers
-  readOnly: false
-- name: apache-nifi-database-repo
-  mountPath: /opt/nifi/nifi-current/database_repository
-  readOnly: false
-- name: apache-nifi-content-repo
-  mountPath: /opt/nifi/nifi-current/content_repository
-  readOnly: false
-- name: apache-nifi-nar-repo
-  mountPath: /opt/nifi/nifi-current/nar_repository
-  readOnly: false
-- name: apache-nifi-provenance-repo
-  mountPath: /opt/nifi/nifi-current/provenance_repository
-  readOnly: false
-- name: apache-nifi-flowfile-repo
-  mountPath: /opt/nifi/nifi-current/flowfile_repository
-  readOnly: false
+# - name: apache-nifi-registry-database-repo
+#   mountPath: /opt/nifi-registry/nifi-registry-current/database_repository
+#   readOnly: falseend
+# - name: apache-nifi-registry-content-repo
+#   mountPath: /opt/nifi-registry/nifi-registry-current/content_repository
+#   readOnly: false
+# - name: apache-nifi-registry-nar-repo
+#   mountPath: /opt/nifi-registry/nifi-registry-current/nar_repository
+#   readOnly: false
+# - name: apache-nifi-registry-provenance-repo
+#   mountPath: /opt/nifi-registry/nifi-registry-current/provenance_repository
+#   readOnly: false
+# - name: apache-nifi-registry-flowfile-repo
+#   mountPath: /opt/nifi-registry/nifi-registry-current/flowfile_repository
+#   readOnly: false
 
 nodeSelector: {}
 
@@ -207,20 +207,36 @@ tolerations: []
 affinity: {}
 
 app:
-  nifiWebHttpsHost: "0.0.0.0"
-  nifiWebHttpsPort: 8443
+  nifiRegistryWebHttpsHost: "0.0.0.0"
+  nifiRegistryWebHttpsPort: 18443
   # HTTP deployment is not working
-  # nifiWebHttpHost: 
-  # nifiWebHttpPort: 
-  nifiFlowConfigurationFile: ./custom_conf/flow.json.gz
-  nifiFlowConfigurationArchiveDir: ./custom_conf/archive/
-  nifiAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
-  nifiLoginIdentityProviderConfigurationFile: ./custom_conf/login-identity-providers.xml
-  nifiStateManagementConfigurationFile: ./custom_conf/state-management.xml
-  nifiStateManagementEmbeddedZookeeperProperties: ./custom_conf/zookeeper.properties
-  nifiSecurityKeystore: ./custom_conf/keystore.p12
-  nifiSecurityTruststore: ./custom_conf/truststore.p12
+  nifiRegistryWebHttpHost: "0.0.0.0"
+  nifiRegistryWebHttpPort: 18080
+  nifiRegistryAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
+  nifiRegistryLoginIdentityProviderConfigurationFile: ./custom_conf/identity-providers.xml
+  nifiRegistryWProvidersConfigurationFile: ./custom_conf/providers.xml
+  nifiRegistryRegistryAliasConfigurationFile: /custom_conf/registry-aliases.xml
+  # nifiFlowConfigurationFile: ./custom_conf/flow.json.gz
+  # nifiFlowConfigurationArchiveDir: ./custom_conf/archive/
+  # nifiAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
+  # nifiLoginIdentityProviderConfigurationFile: ./custom_conf/login-identity-providers.xml
+  # nifiStateManagementConfigurationFile: ./custom_conf/state-management.xml
+  # nifiStateManagementEmbeddedZookeeperProperties: ./custom_conf/zookeeper.properties
+  # nifiSecurityKeystore: ./custom_conf/keystore.p12
+  # nifiSecurityTruststore: ./custom_conf/truststore.p12
   # SINGLE_USER_CREDENTIALS_USERNAME
   # singleUserCredentialsUsername: admin
   #singleUserCredentialsPassword: admin
   # nifiNarLibraryProviderNifiRegistryUrl: http://nifi-registry.nifi-registry.svc.cluster.local:18080
+  # Nifi Registry JDBC:
+  # Environment variables: https://github.com/apache/nifi/blob/main/nifi-registry/nifi-registry-core/nifi-registry-docker/dockerhub/sh/update_database.sh
+  # nifiRegistryDbUrl=jdbc:postgresql://<POSTGRES-HOSTNAME>/nifireg
+  # nifiRegistryDbDriverClass: org.postgresql.Driver
+  # nifiRegistryDbDriverDirectory=/path/to/drivers
+  # nifiRegistryDbUsername=nifireg
+  # nifiRegistryDbPassword=changeme
+  # nifi.registry.db.url=jdbc:postgresql://<POSTGRES-HOSTNAME>/nifireg
+  # nifi.registry.db.driver.class=org.postgresql.Driver
+  nifi.registry.db.driver.directory: /opt/nifi-registry/nifi-registry-current/drivers
+  # nifi.registry.db.username=nifireg
+  # nifi.registry.db.password=changeme

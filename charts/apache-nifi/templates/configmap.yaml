@@ -23,3 +23,6 @@ data:
   NIFI_STATE_MANAGEMENT_EMBEDDED_ZOOKEEPER_PROPERTIES: {{ .Values.app.nifiStateManagementEmbeddedZookeeperProperties | quote }}
   NIFI_SECURITY_KEYSTORE: {{ .Values.app.nifiSecurityKeystore | quote }}
   NIFI_SECURITY_TRUSTSTORE: {{ .Values.app.nifiSecurityTruststore | quote }}
+  {{- if .Values.app.nifiNarLibraryProviderNifiRegistryUrl }}
+  NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL: {{ .Values.app.nifiNarLibraryProviderNifiRegistryUrl | quote }}
+  {{- end }}

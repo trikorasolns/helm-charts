@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "apache-nifi-registry.fullname" . }}
+  labels:
+    {{- include "apache-nifi-registry.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "apache-nifi-registry.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "apache-nifi-registry.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "apache-nifi-registry.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - sh
+          - -c
+          - |
+            # Function copied from the Apache Nifi docker scripts at https://github.com/apache/nifi/blob/main/nifi-docker/dockerhub/sh/common.sh
+            export
+            scripts_dir='/opt/nifi-registry/scripts'
+            [ -f "${scripts_dir}/common.sh" ] && . "${scripts_dir}/common.sh"
+            echo "Check if the ${NIFI_REGISTRY_DB_DIR}/${NIFI_REGISTRY_DB_DRIVER_FILE} file exists..."
+            ls -la ${NIFI_REGISTRY_DB_DIR}
+            if [ ! -f ${NIFI_REGISTRY_DB_DIR}/${NIFI_REGISTRY_DB_DRIVER_FILE} ]; then
+              echo "Downloading the JDBC driver from ${NIFI_REGISTRY_DB_DRIVER_URL} to ${NIFI_REGISTRY_DB_DIR}/${NIFI_REGISTRY_DB_DRIVER_FILE}..."
+              curl -L ${NIFI_REGISTRY_DB_DRIVER_URL} -o ${NIFI_REGISTRY_DB_DIR}/${NIFI_REGISTRY_DB_DRIVER_FILE}
+            fi
+            ls -la ${NIFI_REGISTRY_DB_DIR}
+            prop_replace 'nifi.registry.security.authorizers.configuration.file'        ${NIFI_REGISTRY_AUTHORIZER_CONFIGURATION_FILE}               #=./conf/authorizers.xml
+            prop_replace 'nifi.registry.security.identity.providers.configuration.file' ${NIFI_REGISTRY_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE}  #=./conf/identity-providers.xml
+            # prop_replace 'nifi.registry.providers.configuration.file'                   ${NIFI_REGISTRY_PROVIDERS_CONFIGURATION_FILE}                #=./conf/providers.xml
+            prop_replace 'nifi.registry.registry.alias.configuration.file'              ${NIFI_REGISTRY_REGISTRY_ALIAS_CONFIGURATION_FILE}           #=./conf/registry-aliases.xml
+            # if [ ! -z ${NIFI_REGISTRY_DB_URL+x} ]; then
+            #   echo "Replacing nifi.registry.db.url with ${NIFI_REGISTRY_DB_URL}..."
+            #   # uncomment    'nifi.registry.db.url' /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            #   prop_replace 'nifi.registry.db.url' ${NIFI_REGISTRY_DB_URL} /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            # fi
+            # if [ ! -z ${NIFI_REGISTRY_DB_DRIVER_CLASS+x} ]; then
+            #   echo "Replacing nifi.registry.db.driver.class with ${NIFI_REGISTRY_DB_DRIVER_CLASS}..."
+            #   # uncomment    'nifi.registry.db.driver.class' /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            #   prop_replace 'nifi.registry.db.driver.class' ${NIFI_REGISTRY_DB_DRIVER_CLASS} /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            # fi
+            # if [ ! -z ${NIFI_REGISTRY_DB_DRIVER_DIRECTORY+x} ]; then
+            #   echo "Replacing nifi.registry.db.driver.directory with ${NIFI_REGISTRY_DB_DRIVER_DIRECTORY}..."
+            #   # uncomment    'nifi.registry.db.driver.directory' /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            #   prop_replace 'nifi.registry.db.driver.directory' ${NIFI_REGISTRY_DB_DRIVER_DIRECTORY} /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            # fi
+            # if [ ! -z ${NIFI_REGISTRY_DB_USERNAME+x} ]; then
+            #   echo "Replacing nifi.registry.db.username with ${NIFI_REGISTRY_DB_USERNAME}..."
+            #   # uncomment    'nifi.registry.db.username' /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            #   prop_replace 'nifi.registry.db.username' ${NIFI_REGISTRY_DB_USERNAME} /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            # fi
+            # if [ ! -z ${NIFI_REGISTRY_DB_DRIVER_URL+x} ]; then
+            #   echo "Replacing nifi.registry.db.password with ${NIFI_REGISTRY_DB_DRIVER_URL}..."
+            #   # uncomment    'nifi.registry.db.password' /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            #   prop_replace 'nifi.registry.db.password' ${NIFI_REGISTRY_DB_DRIVER_URL} /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties
+            # fi
+            # cat /opt/nifi-registry/nifi-registry-current/conf/nifi-registry.properties | grep db
+            ../scripts/start.sh
+          envFrom:
+            - configMapRef:
+                name: {{ include "apache-nifi-registry.fullname" . }}
+            - secretRef:
+                name: {{ include "apache-nifi-registry.fullname" . }}
+          ports:
+            - name: https
+              containerPort: {{ .Values.app.nifiRegistryWebHttpsPort | default 18443 }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.app.nifiRegistryWebHttpPort | default 18080 }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

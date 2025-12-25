@@ -50,6 +50,7 @@ spec:
             #   echo "File [${target_file}] replacing [${1}]"
             #   sed -i -e "s|^$1=.*$|$1=$2|"  ${target_file}
             # }
+            scripts_dir='/opt/nifi/scripts'
             [ -f "${scripts_dir}/common.sh" ] && . "${scripts_dir}/common.sh"
             # 1 - value to search for
             # 2 - value to replace
@@ -72,12 +73,16 @@ spec:
             # nifi.state.management.embedded.zookeeper.properties=./conf/zookeeper.properties
             # nifi.security.keystore=./conf/keystore.p12
             # nifi.security.truststore=./conf/truststore.p12
-            ../scripts/start.sh
           #   ../scripts/start.sh
           #   # sed -i 's/^#\?nifi.web.http.port=.*/nifi.web.http.port=${NIFI_WEB_HTTP_PORT:-8080}/' /opt/nifi/nifi-current/conf/nifi.properties
           #   # sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTP_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
           #   # sed -i 's/^#\?nifi.web.https.port=.*/nifi.web.http.port=/' /opt/nifi/nifi-current/conf/nifi.properties
           #   # sed -i 's/^#\?nifi.web.https.host=.*/nifi.web.https.host=/' /opt/nifi/nifi-current/conf/nifi.properties
+            if [ ! -z ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL+x} ]; then 
+              uncomment    'nifi.nar.library.provider.nifi-registry.url' /opt/nifi/nifi-current/conf/nifi.properties
+              prop_replace 'nifi.sensitive.props.key' ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL} /opt/nifi/nifi-current/conf/nifi.properties
+            fi
+            ../scripts/start.sh
           envFrom:
             - configMapRef:
                 name: {{ include "apache-nifi.fullname" . }}
