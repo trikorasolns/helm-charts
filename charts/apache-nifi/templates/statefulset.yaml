@@ -60,25 +60,21 @@ spec:
             # sed -i 's/^#\?nifi.flow.configuration.archive.dir=.*/nifi.flow.configuration.archive.dir='${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}'/' /opt/nifi/nifi-current/conf/nifi.properties
             prop_replace 'nifi.flow.configuration.archive.dir'              ${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}
             # sed -i 's/^#\?nifi.login.identity.provider.configuration.file=.*/nifi.login.identity.provider.configuration.file='${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}'/' /opt/nifi/nifi-current/conf/nifi.properties
-            prop_replace 'nifi.login.identity.provider.configuration.file'  ${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}
+            # prop_replace 'nifi.login.identity.provider.configuration.file'  ${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}
             # sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
             prop_replace 'nifi.web.http.host'                               ${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}
             # sed -i 's/^#\?nifi.sensitive.props.key=.*/nifi.sensitive.props.key=${NIFI_SENSITIVE_PROPS_KEY}/' /opt/nifi/nifi-current/conf/nifi.properties
             prop_replace 'nifi.sensitive.props.key'                         ${NIFI_SENSITIVE_PROPS_KEY}
             # Properties under conf, maybe should be all moved.
             # nifi.authorizer.configuration.file=./conf/authorizers.xml
-            prop_replace 'nifi.authorizer.configuration.file'               ${NIFI_AUTHORIZER_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}
+            # prop_replace 'nifi.authorizer.configuration.file'               ${NIFI_AUTHORIZER_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}
             # nifi.login.identity.provider.configuration.file=./conf/login-identity-providers.xml
             # nifi.state.management.configuration.file=./conf/state-management.xml
             # nifi.state.management.embedded.zookeeper.properties=./conf/zookeeper.properties
             # nifi.security.keystore=./conf/keystore.p12
             # nifi.security.truststore=./conf/truststore.p12
-          #   ../scripts/start.sh
-          #   # sed -i 's/^#\?nifi.web.http.port=.*/nifi.web.http.port=${NIFI_WEB_HTTP_PORT:-8080}/' /opt/nifi/nifi-current/conf/nifi.properties
-          #   # sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTP_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
-          #   # sed -i 's/^#\?nifi.web.https.port=.*/nifi.web.http.port=/' /opt/nifi/nifi-current/conf/nifi.properties
-          #   # sed -i 's/^#\?nifi.web.https.host=.*/nifi.web.https.host=/' /opt/nifi/nifi-current/conf/nifi.properties
             if [ ! -z ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL+x} ]; then 
+              uncomment    'nifi.nar.library.provider.nifi-registry.implementation' /opt/nifi/nifi-current/conf/nifi.properties
               uncomment    'nifi.nar.library.provider.nifi-registry.url' /opt/nifi/nifi-current/conf/nifi.properties
               prop_replace 'nifi.sensitive.props.key' ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL} /opt/nifi/nifi-current/conf/nifi.properties
             fi

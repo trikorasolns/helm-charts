@@ -55,6 +55,8 @@ spec:
               curl -L ${NIFI_REGISTRY_DB_DRIVER_URL} -o ${NIFI_REGISTRY_DB_DIR}/${NIFI_REGISTRY_DB_DRIVER_FILE}
             fi
             ls -la ${NIFI_REGISTRY_DB_DIR}
+            prop_replace 'nifi.registry.web.http.host'                                  ${NIFI_REGISTRY_WEB_HTTP_HOST:-$HOSTNAME}
+            prop_replace 'nifi.registry.web.http.port'                                  ${NIFI_REGISTRY_WEB_HTTP_PORT}
             prop_replace 'nifi.registry.security.authorizers.configuration.file'        ${NIFI_REGISTRY_AUTHORIZER_CONFIGURATION_FILE}               #=./conf/authorizers.xml
             prop_replace 'nifi.registry.security.identity.providers.configuration.file' ${NIFI_REGISTRY_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE}  #=./conf/identity-providers.xml
             # prop_replace 'nifi.registry.providers.configuration.file'                   ${NIFI_REGISTRY_PROVIDERS_CONFIGURATION_FILE}                #=./conf/providers.xml
