@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "apache-nifi.fullname" . }}
+  labels:
+    {{- include "apache-nifi.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "apache-nifi.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "apache-nifi.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "apache-nifi.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - sh
+          - -c
+          - |
+            # Function copied from the Apache Nifi docker scripts at https://github.com/apache/nifi/blob/main/nifi-docker/dockerhub/sh/common.sh
+            # prop_replace () {
+            #   target_file=${3:-${nifi_props_file}}
+            #   echo "File [${target_file}] replacing [${1}]"
+            #   sed -i -e "s|^$1=.*$|$1=$2|"  ${target_file}
+            # }
+            scripts_dir='/opt/nifi/scripts'
+            [ -f "${scripts_dir}/common.sh" ] && . "${scripts_dir}/common.sh"
+            # 1 - value to search for
+            # 2 - value to replace
+            # 3 - file to perform replacement inline (default to nifi_props_file)
+            # sed -i 's/^#\?nifi.flow.configuration.file=.*/nifi.flow.configuration.file='${NIFI_FLOW_CONFIGURATION_FILE}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            prop_replace 'nifi.flow.configuration.file'                     ${NIFI_FLOW_CONFIGURATION_FILE}
+            # sed -i 's/^#\?nifi.flow.configuration.archive.dir=.*/nifi.flow.configuration.archive.dir='${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            prop_replace 'nifi.flow.configuration.archive.dir'              ${NIFI_FLOW_CONFIGURATION_ARCHIVE_DIR:-".\/custom-conf\/archive\/"}
+            # sed -i 's/^#\?nifi.login.identity.provider.configuration.file=.*/nifi.login.identity.provider.configuration.file='${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}'/' /opt/nifi/nifi-current/conf/nifi.properties
+            # prop_replace 'nifi.login.identity.provider.configuration.file'  ${NIFI_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE:-".\/custom-conf\/login-identity-providers.xml"}
+            # sed -i 's/^#\?nifi.web.http.host=.*/nifi.web.http.host=${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}/' /opt/nifi/nifi-current/conf/nifi.properties
+            prop_replace 'nifi.web.http.host'                               ${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}
+            # sed -i 's/^#\?nifi.sensitive.props.key=.*/nifi.sensitive.props.key=${NIFI_SENSITIVE_PROPS_KEY}/' /opt/nifi/nifi-current/conf/nifi.properties
+            prop_replace 'nifi.sensitive.props.key'                         ${NIFI_SENSITIVE_PROPS_KEY}
+            # Properties under conf, maybe should be all moved.
+            # nifi.authorizer.configuration.file=./conf/authorizers.xml
+            # prop_replace 'nifi.authorizer.configuration.file'               ${NIFI_AUTHORIZER_CONFIGURATION_FILE:-".\/custom-conf\/flow.json.gz"}
+            # nifi.login.identity.provider.configuration.file=./conf/login-identity-providers.xml
+            # nifi.state.management.configuration.file=./conf/state-management.xml
+            # nifi.state.management.embedded.zookeeper.properties=./conf/zookeeper.properties
+            # nifi.security.keystore=./conf/keystore.p12
+            # nifi.security.truststore=./conf/truststore.p12
+            if [ ! -z ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL+x} ]; then 
+              uncomment    'nifi.nar.library.provider.nifi-registry.implementation' /opt/nifi/nifi-current/conf/nifi.properties
+              uncomment    'nifi.nar.library.provider.nifi-registry.url' /opt/nifi/nifi-current/conf/nifi.properties
+              prop_replace 'nifi.sensitive.props.key' ${NIFI_NAR_LIBRARY_PROVIDER_NIFI_REGISTRY_URL} /opt/nifi/nifi-current/conf/nifi.properties
+            fi
+            ../scripts/start.sh
+          envFrom:
+            - configMapRef:
+                name: {{ include "apache-nifi.fullname" . }}
+            - secretRef:
+                name: {{ include "apache-nifi.fullname" . }}
+          ports:
+            - name: https
+              containerPort: {{ .Values.app.nifiWebHttpsPort | default 8443 }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.app.nifiWebHttpPort | default 8080 }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

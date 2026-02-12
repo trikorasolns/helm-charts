@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "apache-nifi-registry.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apache-nifi-registry.labels" . | nindent 4 }}
+data:
+  {{- if .Values.app.nifiRegistryWebHttpsHost }}
+  NIFI_REGISTRY_WEB_HTTPS_HOST: {{ .Values.app.nifiRegistryWebHttpsHost | quote }}
+  {{- end }}
+  NIFI_REGISTRY_WEB_HTTPS_PORT: {{ .Values.app.nifiRegistryWebHttpsPort | default 18443 | quote }}
+  {{- if .Values.app.nifiRegistryWebHttpHost }}
+  NIFI_REGISTRY_WEB_HTTP_HOST: {{ .Values.app.nifiRegistryWebHttpHost | quote }}
+  {{- end }}
+  NIFI_REGISTRY_WEB_HTTP_PORT: {{ .Values.app.nifiRegistryWebHttpPort | default 18080 | quote }}
+  NIFI_REGISTRY_AUTHORIZER_CONFIGURATION_FILE: {{ .Values.app.nifiRegistryAuthorizerConfigurationFile | quote }}
+  NIFI_REGISTRY_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE: {{ .Values.app.nifiRegistryLoginIdentityProviderConfigurationFile | quote }}
+  NIFI_REGISTRY_PROVIDERS_CONFIGURATION_FILE: {{ .Values.app.nifiRegistryWProvidersConfigurationFile | quote }}
+  NIFI_REGISTRY_REGISTRY_ALIAS_CONFIGURATION_FILE: {{ .Values.app.nifiRegistryRegistryAliasConfigurationFile | quote }}
+  # NIFI_REGISTRY_FLOW_CONFIGURATION_FILE: {{ .Values.app.nifiFlowConfigurationFile | quote }}
+  # NIFI_REGISTRY_FLOW_CONFIGURATION_ARCHIVE_DIR: {{ .Values.app.nifiFlowConfigurationArchiveDir | quote }}
+  # NIFI_REGISTRY_AUTHORIZER_CONFIGURATION_FILE: {{ .Values.app.nifiAuthorizerConfigurationFile | quote }}
+  # NIFI_REGISTRY_LOGIN_IDENTITY_PROVIDER_CONFIGURATION_FILE: {{ .Values.app.nifiLoginIdentityProviderConfigurationFile | quote }}
+  # NIFI_REGISTRY_STATE_MANAGEMENT_CONFIGURATION_FILE: {{ .Values.app.nifiStateManagementConfigurationFile | quote }}
+  # NIFI_REGISTRY_STATE_MANAGEMENT_EMBEDDED_ZOOKEEPER_PROPERTIES: {{ .Values.app.nifiStateManagementEmbeddedZookeeperProperties | quote }}
+  # NIFI_REGISTRY_SECURITY_KEYSTORE: {{ .Values.app.nifiSecurityKeystore | quote }}
+  # NIFI_REGISTRY_SECURITY_TRUSTSTORE: {{ .Values.app.nifiSecurityTruststore | quote }}
+  {{- if .Values.app.nifiRegistryDbUrl }}
+  NIFI_REGISTRY_DB_URL: {{ .Values.app.nifiRegistryDbUrl | quote }}
+  {{- end }}
+  {{- if .Values.app.nifiRegistryDbDriverClass }}
+  NIFI_REGISTRY_DB_CLASS: {{ .Values.app.nifiRegistryDbDriverClass | quote }}
+  {{- end }}
+  {{- if .Values.app.nifiRegistryDbDriverDirectory }}
+  NIFI_REGISTRY_DB_DIR: {{ .Values.app.nifiRegistryDbDriverDirectory | quote }}
+  {{- end }}
+  {{- if .Values.app.nifiRegistryDbUsername }}
+  NIFI_REGISTRY_DB_USER: {{ .Values.app.nifiRegistryDbUsername | quote }}
+  {{- end }}
+  {{- if .Values.app.nifiRegistryDbDriverUrl }}
+  NIFI_REGISTRY_DB_DRIVER_URL: {{ .Values.app.nifiRegistryDbDriverUrl | quote }}
+  {{- end }}
+  {{- if .Values.app.nifiRegistryDbDriverFile }}
+  NIFI_REGISTRY_DB_DRIVER_FILE: {{ .Values.app.nifiRegistryDbDriverFile | quote }}
+  {{- end }}
+  # OIDC
+  # https://github.com/apache/nifi/blob/main/nifi-registry/nifi-registry-core/nifi-registry-docker/dockerhub/sh/update_oidc_properties.sh
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_DISCOVERY_URL: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_CONNECT_TIMEOUT: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_READ_TIMEOUT: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_CLIENT_ID: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_CLIENT_SECRET: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_PREFERRED_JWSALGORITHM: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_ADDITIONAL_SCOPES: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_CLAIM_IDENTIFYING_USER: 
+  # NIFI_REGISTRY_SECURITY_USER_OIDC_CLAIM_GROUPS: 
