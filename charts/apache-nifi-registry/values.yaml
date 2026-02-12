@@ -143,6 +143,11 @@ volumes:
     claimName: apache-nifi-registry-drivers
   storage: 256Mi
   accessModes: ReadWriteOnce
+- name: apache-nifi-registry-flow-storage
+  persistentVolumeClaim:
+    claimName: apache-nifi-registry-flow-storage
+  storage: 10Gi
+  accessModes: ReadWriteOnce
 # - name: apache-nifi-registry-database-repo
 #   persistentVolumeClaim:
 #     claimName: apache-nifi-registry-database-repo
@@ -184,6 +189,9 @@ volumeMounts:
 - name: apache-nifi-registry-drivers
   mountPath: /opt/nifi-registry/nifi-registry-current/drivers
   readOnly: false
+- name: apache-nifi-registry-flow-storage
+  mountPath: /opt/nifi-registry/nifi-registry-current/flow_storage
+  readOnly: false
 # - name: apache-nifi-registry-database-repo
 #   mountPath: /opt/nifi-registry/nifi-registry-current/database_repository
 #   readOnly: falseend
@@ -215,7 +223,7 @@ app:
   nifiRegistryAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
   nifiRegistryLoginIdentityProviderConfigurationFile: ./custom_conf/identity-providers.xml
   nifiRegistryWProvidersConfigurationFile: ./custom_conf/providers.xml
-  nifiRegistryRegistryAliasConfigurationFile: /custom_conf/registry-aliases.xml
+  nifiRegistryRegistryAliasConfigurationFile: ./custom_conf/registry-aliases.xml
   # nifiFlowConfigurationFile: ./custom_conf/flow.json.gz
   # nifiFlowConfigurationArchiveDir: ./custom_conf/archive/
   # nifiAuthorizerConfigurationFile: ./custom_conf/authorizers.xml
