@@ -27,8 +27,8 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
 
 securityContext: {}
   # capabilities:
@@ -86,6 +86,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+volumes:
+- name: postgresql-data
+  persistentVolumeClaim:
+    claimName: postgresql-data
+volumeMounts:
+- name: postgresql-data
+  mountPath: "/var/lib/postgresql/data"
+  readOnly: false
 
 persistence:
   # Use the following variables to define the POSTGRES database to be created and the POSTGRES default user.
