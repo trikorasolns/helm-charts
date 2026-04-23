@@ -25,6 +25,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           resources:
@@ -42,20 +46,11 @@ spec:
                 name: {{ include "postgresql.fullname" . }}
             - secretRef:
                 name: {{ include "postgresql.fullname" . }}
+          {{- with .Values.volumeMounts }}
           volumeMounts:
-            - mountPath: {{ .Values.persistence.mountPath }}
-              name: "postgresql-data"
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
       volumes:
-        - name: "postgresql-data"
-        {{- if not .Values.persistence.iscsi }}
-          persistentVolumeClaim:
-            claimName: {{ include "postgresql.fullname" . }}
-        {{- else }}
-          iscsi:
-            targetPortal: {{ .Values.persistence.iscsi.targetPortal }}
-            portals: {{ .Values.persistence.iscsi.portals }}
-            iqn: {{ .Values.persistence.iscsi.iqn }}
-            lun: {{ .Values.persistence.iscsi.lun }}
-            fsType: {{ .Values.persistence.iscsi.fsType }}
-            readOnly: {{ .Values.persistence.iscsi.readOnly }}
-        {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

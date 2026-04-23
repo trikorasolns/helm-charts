@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   # repository: docker.io/bitnami/postgresql
-  repository:  postgres
+  repository: postgres
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "10.2.14"
@@ -27,8 +27,8 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1000
 
 securityContext: {}
   # capabilities:
@@ -37,7 +37,7 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-  # seLinuxOptions: 
+  # seLinuxOptions:
   #   role: system_r
   #   type: container_t
   #   user: system_u
@@ -86,6 +86,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+volumes:
+- name: postgresql-data
+  persistentVolumeClaim:
+    claimName: postgresql-data
+volumeMounts:
+- name: postgresql-data
+  mountPath: "/var/lib/postgresql/data"
+  readOnly: false
 
 persistence:
   # Use the following variables to define the POSTGRES database to be created and the POSTGRES default user.
@@ -93,8 +101,7 @@ persistence:
   # dbName: tbd
   # dbUser: tbd
   dbDataSize: 10Gi
-  mountPath: "/var/lib/postgresql/data"
-  dbPassword: changeTheDetaulfDbPasswordForPostgreSql
+  dbPassword: changeTheDefaultDbPasswordForPostgreSql
   # storageClassName: local-storage
   # To use an iscsi target use this section instead
   # iscsi:
