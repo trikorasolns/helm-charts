@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   # repository: docker.io/bitnami/postgresql
-  repository:  postgres
+  repository: postgres
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "10.2.14"
@@ -37,7 +37,7 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-  # seLinuxOptions: 
+  # seLinuxOptions:
   #   role: system_r
   #   type: container_t
   #   user: system_u
