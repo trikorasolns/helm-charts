@@ -274,6 +274,19 @@ entries:
   postgresql:
   - apiVersion: v2
     appVersion: "16"
+    created: "2026-04-24T07:50:54.663681391Z"
+    description: A Helm chart for Kubernetes
+    digest: 948c33ea65a668f45b010db745cc196d1aad0516a78b6b94d2c1966b7e24ed6f
+    maintainers:
+    - email: ac@trikorasolutions.com
+      name: jacobdotcosta
+    name: postgresql
+    type: application
+    urls:
+    - https://github.com/trikorasolns/helm-charts/releases/download/postgresql-0.1.4/postgresql-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: "16"
     created: "2026-04-24T07:09:06.953161192Z"
     description: A Helm chart for Kubernetes
     digest: e1ea85bf8d499635107193df5333820553ec4175d9c1338e32e4d208612cf226
@@ -339,4 +352,4 @@ entries:
     urls:
     - https://github.com/trikorasolns/helm-charts/releases/download/sonarqube-0.1.0/sonarqube-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-24T07:09:06.953188683Z"
+generated: "2026-04-24T07:50:54.663716574Z"
