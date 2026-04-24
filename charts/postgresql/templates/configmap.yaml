@@ -8,3 +8,5 @@ metadata:
 data:
   POSTGRES_DB: {{ .Values.persistence.dbName | default .Release.Namespace }}
   POSTGRES_USER: {{ .Values.persistence.dbUser | default .Release.Namespace}}
+  POSTGRESQL_DATABASE: {{ .Values.persistence.dbName | default .Release.Namespace }}
+  POSTGRESQL_USER: {{ .Values.persistence.dbUser | default .Release.Namespace}}

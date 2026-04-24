@@ -5,7 +5,8 @@
 replicaCount: 1
 
 image:
-  # repository: docker.io/bitnami/postgresql
+  # repository: registry.redhat.io/rhel8/postgresql-16
+  # tag: latest
   repository: postgres
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
