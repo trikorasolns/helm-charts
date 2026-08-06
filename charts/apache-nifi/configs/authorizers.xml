@@ -1,0 +1,15 @@
+<authorizers>
+  <authorizer>
+    <identifier>file-authorizer</identifier>
+    <class>org.apache.nifi.authorization.FileAuthorizer</class>
+    <property name="Authorizations File">./conf/authorizations.xml</property>
+    <property name="Users File">./conf/users.xml</property>
+    <property name="Initial Admin Identity">admin</property>
+    <property name="Legacy Authorized Users File"></property>
+    <property name="Node Identity 1"></property>
+    <!-- Allow anonymous read access to the /access endpoint -->
+    <property name="Anonymous Access Policies">
+      <policy identifier="anonymous-policy" resource="/access" action="read"/>
+    </property>
+  </authorizer>
+</authorizers>
